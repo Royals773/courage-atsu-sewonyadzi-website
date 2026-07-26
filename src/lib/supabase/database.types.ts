@@ -126,6 +126,8 @@ export interface Database {
           author_note: string | null;
           key_lessons: string[];
           who_its_for: string[];
+          why_it_matters: string | null;
+          practical_outcomes: string[];
           table_of_contents: TableOfContentsEntryRow[];
           publication_date: string | null;
           featured: boolean;
@@ -147,6 +149,8 @@ export interface Database {
           author_note?: string | null;
           key_lessons?: string[];
           who_its_for?: string[];
+          why_it_matters?: string | null;
+          practical_outcomes?: string[];
           table_of_contents?: TableOfContentsEntryRow[];
           publication_date?: string | null;
           featured?: boolean;

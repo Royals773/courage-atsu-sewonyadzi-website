@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getBookBySlug, getPublishedBooks } from "@/lib/books/queries";
 import { getFaqs } from "@/lib/faqs/queries";
 import { getApprovedTestimonials } from "@/lib/testimonials/queries";
+import { getRelatedArticlesForBook } from "@/lib/blog/queries";
+import { getFeaturedSpeakingTopics } from "@/lib/speaking/topics";
 import { siteConfig } from "@/lib/content/site-config";
 import { getSettingGroup } from "@/lib/settings/queries";
 import { buildMetadata } from "@/lib/seo";
@@ -47,11 +49,13 @@ export default async function BookPage({
   const book = await getBookBySlug(slug);
   if (!book) notFound();
 
-  const [allBooks, faqs, testimonials, brand] = await Promise.all([
+  const [allBooks, faqs, testimonials, brand, relatedArticles, relatedTalks] = await Promise.all([
     getPublishedBooks(),
     getFaqs(),
     getApprovedTestimonials(),
     getSettingGroup("brand"),
+    getRelatedArticlesForBook(book.categories),
+    getFeaturedSpeakingTopics(),
   ]);
   const relatedBooks = allBooks.filter((b) => b.id !== book.id).slice(0, 2);
   const bookFaqs = faqs.filter((f) =>
@@ -113,26 +117,43 @@ export default async function BookPage({
             {book.description}
           </p>
 
+          {book.whyItMatters ? (
+            <div className="mt-6 rounded-lg border border-border bg-secondary/30 p-4">
+              <p className="text-xs font-semibold tracking-wide text-gold uppercase">Why it matters</p>
+              <p className="mt-2 text-pretty text-foreground/90">{book.whyItMatters}</p>
+            </div>
+          ) : null}
+
           <Separator className="my-6" />
 
           <BookPurchasePanel book={book} />
         </div>
       </div>
 
-      <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
-        <div>
-          <h2 className="font-heading text-2xl font-semibold">Key lessons</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
-            {book.keyLessons.map((lesson) => (
-              <li key={lesson}>{lesson}</li>
-            ))}
-          </ul>
-        </div>
+      <div className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <h2 className="font-heading text-2xl font-semibold">Who it&apos;s for</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
             {book.whoItsFor.map((item) => (
               <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        {book.practicalOutcomes.length > 0 ? (
+          <div>
+            <h2 className="font-heading text-2xl font-semibold">Practical outcomes</h2>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
+              {book.practicalOutcomes.map((outcome) => (
+                <li key={outcome}>{outcome}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+        <div>
+          <h2 className="font-heading text-2xl font-semibold">Leadership insights</h2>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
+            {book.keyLessons.map((lesson) => (
+              <li key={lesson}>{lesson}</li>
             ))}
           </ul>
         </div>
@@ -202,6 +223,43 @@ export default async function BookPage({
           ))}
         </Accordion>
       </div>
+
+      {relatedTalks.length > 0 ? (
+        <div className="mt-16">
+          <h2 className="font-heading text-2xl font-semibold">Related talks</h2>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {relatedTalks.slice(0, 3).map((topic) => (
+              <Link
+                key={topic.id}
+                href={`/speaking/topics/${topic.slug}`}
+                className="rounded-lg border border-border p-4 transition-shadow hover:shadow-md"
+              >
+                <p className="font-heading font-semibold">{topic.title}</p>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{topic.summary}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {relatedArticles.length > 0 ? (
+        <div className="mt-16">
+          <h2 className="font-heading text-2xl font-semibold">Related articles</h2>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {relatedArticles.map((post) => (
+              <Link
+                key={post.id}
+                href={`/insights/${post.slug}`}
+                className="rounded-lg border border-border p-4 transition-shadow hover:shadow-md"
+              >
+                <p className="text-xs font-medium tracking-wide text-gold uppercase">{post.category}</p>
+                <p className="mt-1 font-heading font-semibold">{post.title}</p>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {relatedBooks.length > 0 ? (
         <div className="mt-16">

@@ -17,7 +17,7 @@ export async function FeaturedBooks() {
           <SectionHeading
             eyebrow="Books"
             title="Featured books"
-            description="Practical, field-tested writing on leadership, care quality and building across borders."
+            description="Practical, field-tested writing on leadership, strategy and building organisations that last."
           />
           <Button
             variant="outline"

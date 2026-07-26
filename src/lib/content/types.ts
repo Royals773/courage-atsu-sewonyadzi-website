@@ -66,8 +66,11 @@ export interface Book {
    * roadmap) — never rendered to users as a stat.
    */
   popularityScore: number;
+  /** Displayed as "Leadership insights" on the book page. */
   keyLessons: string[];
   whoItsFor: string[];
+  whyItMatters: string;
+  practicalOutcomes: string[];
   tableOfContents: TableOfContentsEntry[];
   hasSampleChapter: boolean;
 }
@@ -88,29 +91,6 @@ export interface Testimonial {
   category: TestimonialCategory;
   featured: boolean;
   isFictionalPlaceholder: true;
-}
-
-export type BlogCategory =
-  | "leadership"
-  | "adult-social-care"
-  | "business"
-  | "entrepreneurship"
-  | "personal-growth"
-  | "investment"
-  | "africa"
-  | "technology";
-
-export interface BlogPost {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  category: BlogCategory;
-  author: string;
-  publishedAt: string;
-  readingTimeMinutes: number;
-  featured: boolean;
 }
 
 export type CourseCategory =

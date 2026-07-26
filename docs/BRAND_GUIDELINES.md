@@ -1,38 +1,44 @@
 # Brand Guidelines — Courage Atsu Sewonyadzi
 
 This document defines the personal brand identity for **Courage Atsu
-Sewonyadzi** — *Author | Keynote Speaker | Adult Social Care Strategist |
+Sewonyadzi** — *Author | Keynote Speaker | Leadership Strategist |
 Entrepreneur* — and how it should be applied across the website, email
 communications and any future collateral. Treat it as the reference for
 any future design or copy decision, not just a record of what was built.
+See `docs/MESSAGING_FRAMEWORK.md` for the full messaging framework (tagline
+variations, mission, vision, sector breadth).
 
 ## 1. Brand purpose
 
-To be the clear, credible voice at the intersection of adult social care
-leadership and entrepreneurial strategy — helping organisations and
-leaders build systems, teams and enterprises that hold up under real
-pressure, not just look good on paper.
+To be the clear, credible voice on building organisations that people
+trust, cultures where people thrive, and systems that create lasting
+impact — thinking that holds up across leadership, strategy, governance,
+entrepreneurship and public-facing sectors, not just one industry. Adult
+social care is a recognised area of deep expertise within that, not the
+frame the whole brand sits inside.
 
 ## 2. Audience
 
-- Senior leaders and boards in adult social care and adjacent health/care
-  organisations.
+- Senior leaders and boards across business, public service, education and
+  adjacent sectors — including, but not limited to, adult social care.
 - Conference and event organisers booking keynote or workshop speakers on
-  leadership, care quality and organisational resilience.
+  leadership, culture, strategy and organisational resilience.
 - Readers of the books: practitioners and leaders looking for practical,
   evidence-grounded guidance rather than motivational platitudes.
-- Entrepreneurs and investors interested in cross-border, care-adjacent
-  ventures.
+- Entrepreneurs and investors interested in cross-border ventures,
+  including Africa's economic development.
 
 ## 3. Positioning statement
 
-> Author | Keynote Speaker | Adult Social Care Strategist | Entrepreneur
+> Author | Keynote Speaker | Leadership Strategist | Entrepreneur
 
 Use this exact phrase (or the tagline below) wherever a short descriptor
 is needed — book covers, speaker introductions, email signatures, social
 bios. Don't paraphrase it into something softer or more generic.
 
-**Tagline**: "Strategic leadership for adult social care and beyond."
+**Tagline**: "Helping Leaders Build Better Organisations, Stronger Cultures
+and Lasting Impact." (see `MESSAGING_FRAMEWORK.md` for per-context
+variations — don't repeat the full line on every page).
 
 ## 4. Brand personality
 
@@ -41,8 +47,8 @@ The brand should read as:
 - **Authoritative** — speaks with the confidence of direct experience, not
   borrowed enthusiasm.
 - **Of integrity** — plain, honest, doesn't oversell.
-- **Wise** — draws on lived, frontline experience in adult social care, not
-  just theory.
+- **Wise** — draws on lived, frontline leadership experience, not just
+  theory.
 - **Calmly confident** — no exclamation marks, no hustle-culture energy.
 - **Strategically minded** — frames problems in terms of systems and
   structure, not just inspiration.
@@ -57,8 +63,8 @@ The brand should read as:
 
 - Write in complete, confident sentences. Avoid rhetorical questions,
   hype, and stacked exclamation points.
-- Prefer concrete nouns over abstract ones: "stronger care systems" beats
-  "amazing transformation."
+- Prefer concrete nouns over abstract ones: "stronger cultures and lasting
+  impact" beats "amazing transformation."
 - It's fine to be warm, but warmth comes from clarity and respect for the
   reader's time, not from enthusiasm.
 - Never invent specifics (numbers, client names, awards, dates). Where a
@@ -69,8 +75,9 @@ The brand should read as:
 
 **Do:**
 - Lead with the positioning statement or a specific outcome.
-- Speak to adult social care as a genuine area of strategic expertise, not
-  a footnote to generic "leadership speaking."
+- Speak to leadership, culture, strategy and governance as the frame, with
+  adult social care and other sectors named as genuine areas of applied
+  expertise within it — not the frame itself.
 - Let African heritage and international experience come through as
   lived context (in the biography, in examples), not as a visual trope.
 

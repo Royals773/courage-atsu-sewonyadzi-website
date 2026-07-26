@@ -24,9 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [brand, about] = await Promise.all([
+  const [brand, about, speaking] = await Promise.all([
     getSettingGroup("brand"),
     getSettingGroup("about"),
+    getSettingGroup("speaking"),
   ]);
   const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
 
@@ -59,27 +60,40 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-3xl space-y-10 px-4 sm:px-6 lg:px-8">
           <div>
             <h2 className="font-heading text-2xl font-semibold">
-              Professional journey
+              Personal story
             </h2>
             <p className="mt-4 text-pretty text-foreground/90">{about.professionalJourney}</p>
-          </div>
-          <div>
-            <h2 className="font-heading text-2xl font-semibold">
-              Leadership experience
-            </h2>
             <p className="mt-4 text-pretty text-foreground/90">{about.leadershipExperience}</p>
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold">
-              Motivation for writing
+              Leadership philosophy
+            </h2>
+            <p className="mt-4 text-pretty text-foreground/90">{speaking.philosophy}</p>
+          </div>
+          <div>
+            <h2 className="font-heading text-2xl font-semibold">
+              Lessons learned
+            </h2>
+            <p className="mt-4 text-pretty text-foreground/90">{about.lessonsLearned}</p>
+          </div>
+          <div>
+            <h2 className="font-heading text-2xl font-semibold">
+              Why I write
             </h2>
             <p className="mt-4 text-pretty text-foreground/90">{about.motivationForWriting}</p>
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold">
-              Speaking mission
+              Why I speak
             </h2>
             <p className="mt-4 text-pretty text-foreground/90">{about.speakingMission}</p>
+          </div>
+          <div>
+            <h2 className="font-heading text-2xl font-semibold">
+              Vision for the future
+            </h2>
+            <p className="mt-4 text-pretty text-foreground/90">{brand.vision}</p>
           </div>
         </div>
       </section>

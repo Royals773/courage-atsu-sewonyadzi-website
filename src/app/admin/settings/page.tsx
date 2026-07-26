@@ -324,6 +324,16 @@ export default async function AdminSettingsPage() {
             />
           </div>
           <div>
+            <Label htmlFor="lessonsLearned">Lessons learned</Label>
+            <Textarea
+              id="lessonsLearned"
+              name="lessonsLearned"
+              defaultValue={about.lessonsLearned}
+              rows={3}
+              className="mt-1.5"
+            />
+          </div>
+          <div>
             <Label htmlFor="motivationForWriting">Motivation for writing</Label>
             <Textarea
               id="motivationForWriting"

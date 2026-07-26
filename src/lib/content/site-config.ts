@@ -16,18 +16,18 @@ export const siteConfig = {
   displayName: "Courage Atsu Sewonyadzi",
   initials: "CAS",
   positioningStatement:
-    "Author | Keynote Speaker | Adult Social Care Strategist | Entrepreneur",
-  tagline: "Strategic leadership for adult social care and beyond.",
+    "Author | Keynote Speaker | Leadership Strategist | Entrepreneur",
+  tagline: "Helping Leaders Build Better Organisations, Stronger Cultures and Lasting Impact.",
   shortBio:
-    "Courage Atsu Sewonyadzi helps leaders and organisations in adult social care build stronger systems, sound strategy and lasting impact.",
+    "Courage Atsu Sewonyadzi helps leaders across business, public service, education and beyond build organisations people trust, cultures where people thrive, and systems that create lasting impact.",
   longBiography:
-    "Courage Atsu Sewonyadzi is an author, keynote speaker, adult social care strategist and entrepreneur.\n\n" +
-    "[Placeholder — a paragraph on professional background and the specific experience in adult social care leadership that underpins this work. Content pending final approval.]\n\n" +
+    "Courage Atsu Sewonyadzi is an author, keynote speaker, leadership strategist and entrepreneur working across leadership, organisational culture, strategy, governance and entrepreneurship — with recognised expertise in adult social care and a long-standing interest in Africa's economic development.\n\n" +
+    "[Placeholder — a paragraph on professional background and the range of leadership roles and sectors that underpin this work. Content pending final approval.]\n\n" +
     "[Placeholder — a paragraph on the books, speaking practice and consulting work, including the kinds of organisations and audiences typically served. Content pending final approval.]",
   mission:
-    "[Draft — pending your review] To equip leaders in adult social care and beyond with the strategic clarity, sound systems and confidence to build organisations that last.",
+    "[Draft — pending your review] To equip leaders with the thinking, systems and practical strategies they need to build organisations that people trust, cultures where people thrive, and institutions that create lasting impact.",
   vision:
-    "[Draft — pending your review] A future where care organisations are led with the same rigour, integrity and ambition as any world-class enterprise.",
+    "[Draft — pending your review] A future in which leaders across business, public service, education and community life build institutions strong enough to outlast them and trusted enough to be worth the effort — with Africa's own leaders and enterprises recognised among the world's best.",
   domain: "courageatsusewonyadzi.com",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   contactEmail: "hello@courageatsusewonyadzi.com",

@@ -6,6 +6,7 @@ import { SpeakerStats } from "@/components/home/speaker-stats";
 import { FeaturedOrganisations } from "@/components/home/featured-organisations";
 import { UpcomingEvents } from "@/components/home/upcoming-events";
 import { AboutPreview } from "@/components/home/about-preview";
+import { LeadershipPhilosophy } from "@/components/home/leadership-philosophy";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { LatestInsights } from "@/components/home/latest-insights";
 import { NewsletterSection } from "@/components/home/newsletter-section";
@@ -23,6 +24,7 @@ export default function Home() {
       <FeaturedOrganisations />
       <UpcomingEvents />
       <AboutPreview />
+      <LeadershipPhilosophy />
       <TestimonialsSection />
       <LatestInsights />
       <NewsletterSection />

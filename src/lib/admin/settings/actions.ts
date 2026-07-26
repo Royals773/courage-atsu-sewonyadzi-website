@@ -145,6 +145,7 @@ export async function saveAboutSettingsAction(formData: FormData): Promise<void>
     heroIntro: String(formData.get("heroIntro") ?? ""),
     professionalJourney: String(formData.get("professionalJourney") ?? ""),
     leadershipExperience: String(formData.get("leadershipExperience") ?? ""),
+    lessonsLearned: String(formData.get("lessonsLearned") ?? ""),
     motivationForWriting: String(formData.get("motivationForWriting") ?? ""),
     speakingMission: String(formData.get("speakingMission") ?? ""),
     expertiseAreas: linesOf(formData, "expertiseAreas"),

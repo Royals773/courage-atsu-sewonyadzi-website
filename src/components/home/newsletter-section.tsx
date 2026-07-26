@@ -20,7 +20,7 @@ export function NewsletterSection() {
         <SectionHeading
           eyebrow="Free guide"
           title="Get the free guide: 5 Systems Every Leader Needs"
-          description="Join the mailing list for occasional insights on leadership, care quality and building across borders — plus the free guide as a welcome gift."
+          description="Join the mailing list for occasional insights on leadership, strategy and building organisations that last — plus the free guide as a welcome gift."
           align="center"
           className="[&_p]:text-primary-foreground/80 [&_h2]:text-primary-foreground"
         />

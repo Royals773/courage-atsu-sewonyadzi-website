@@ -86,6 +86,8 @@ async function mapBook(row: DbBookRow): Promise<Book> {
     popularityScore: row.popularity_score,
     keyLessons: row.key_lessons,
     whoItsFor: row.who_its_for,
+    whyItMatters: row.why_it_matters ?? "",
+    practicalOutcomes: row.practical_outcomes,
     tableOfContents: row.table_of_contents as unknown as TableOfContentsEntry[],
     hasSampleChapter: row.has_sample_chapter,
   };

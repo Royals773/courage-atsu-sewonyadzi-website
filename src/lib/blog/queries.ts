@@ -100,3 +100,39 @@ export async function getPostBySlug(slug: string): Promise<PublicBlogPost | null
     return null;
   }
 }
+
+/**
+ * Book categories and blog categories are separate taxonomies that happen
+ * to overlap in meaning — this maps the near-synonyms so "related articles"
+ * on a book page can be a genuine content match, not a fabricated one.
+ */
+const BOOK_TO_BLOG_CATEGORY_SYNONYMS: Record<string, string[]> = {
+  "care-quality": ["adult-social-care"],
+  "personal-development": ["personal-growth"],
+  "africa-investment": ["africa", "investment"],
+};
+
+function slugifyCategoryName(name: string): string {
+  return name.toLowerCase().trim().replace(/\s+/g, "-");
+}
+
+/** Blog posts sharing a category (or known near-synonym) with the given book categories. */
+export async function getRelatedArticlesForBook(
+  bookCategories: string[],
+  limit = 3
+): Promise<PublicBlogPost[]> {
+  if (bookCategories.length === 0) return [];
+
+  const wantedSlugs = new Set<string>();
+  for (const category of bookCategories) {
+    wantedSlugs.add(category);
+    for (const synonym of BOOK_TO_BLOG_CATEGORY_SYNONYMS[category] ?? []) {
+      wantedSlugs.add(synonym);
+    }
+  }
+
+  const posts = await getPublishedPosts();
+  return posts
+    .filter((post) => wantedSlugs.has(slugifyCategoryName(post.category)))
+    .slice(0, limit);
+}

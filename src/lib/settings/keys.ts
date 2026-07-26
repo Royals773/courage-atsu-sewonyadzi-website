@@ -77,6 +77,7 @@ export interface AboutSettings {
   heroIntro: string;
   professionalJourney: string;
   leadershipExperience: string;
+  lessonsLearned: string;
   motivationForWriting: string;
   speakingMission: string;
   expertiseAreas: string[];
@@ -145,13 +146,13 @@ export const SETTINGS_DEFAULTS = {
     defaultDescription: siteConfig.tagline,
   } satisfies SeoSettings,
   hero: {
-    headline: "Helping leaders build stronger care systems, sound strategy and lasting impact.",
+    headline: "Helping leaders build better organisations, stronger cultures and lasting impact.",
     subheading:
-      "An author, keynote speaker and adult social care strategist helping organisations build stronger leadership, systems and impact.",
+      "An author, keynote speaker and leadership strategist working across business, public service, education and adult social care — helping organisations build stronger leadership, culture and systems.",
   } satisfies HeroSettings,
   speaking: {
     introduction:
-      "[Placeholder speaker introduction — a short paragraph on speaking style, experience and the kind of events typically served.]",
+      "[Placeholder speaker introduction — a short paragraph on speaking style, experience and the kind of events typically served, across leadership, strategy and organisational culture.]",
     biography: siteConfig.shortBio,
     philosophy:
       "[Placeholder speaking philosophy — practical, frontline-tested ideas delivered so audiences can apply them the next day, not just feel inspired for an afternoon.]",
@@ -161,30 +162,33 @@ export const SETTINGS_DEFAULTS = {
       "Understand how to apply the ideas within their own team or organisation",
     ],
     industries: [
-      "Adult social care and healthcare services",
-      "Financial services",
-      "Technology",
-      "Government and public sector",
+      "Business and entrepreneurship",
+      "Public service and government",
       "Education",
-      "Non-profit and social enterprise",
+      "Healthcare and adult social care",
+      "Non-profit and community organisations",
+      "Technology and AI-driven organisations",
     ],
   } satisfies SpeakingSettings,
   about: {
     heroIntro:
-      "[Placeholder personal background — a few sentences on who you are, where you started, and what led to this work. Content pending final approval.]",
+      "[Placeholder personal background — a few sentences on who you are, where you started, and what led to this work across leadership, business and public service. Content pending final approval.]",
     professionalJourney:
-      "[Placeholder — outline the professional path from frontline adult social care work through to strategic leadership, consulting, writing and speaking. Content pending final approval.]",
+      "[Placeholder — outline the professional path from frontline experience through to strategic leadership, consulting, writing and speaking across sectors. Content pending final approval.]",
     leadershipExperience:
-      "[Placeholder — summarise leadership roles and the kinds of care organisations and teams led. Content pending final approval.]",
+      "[Placeholder — summarise leadership roles and the kinds of organisations and teams led. Content pending final approval.]",
+    lessonsLearned:
+      "[Placeholder — the practical lessons learned leading real organisations through real pressure, in your own words. Content pending final approval.]",
     motivationForWriting: "[Placeholder — why these books exist and who they were written for. Content pending final approval.]",
     speakingMission:
       "[Placeholder — what speaking work is meant to achieve for audiences and organisations. Content pending final approval.]",
     expertiseAreas: [
-      "Adult social care strategy",
-      "Leadership development",
-      "Care quality and compliance",
-      "Organisational resilience",
-      "Entrepreneurship",
+      "Leadership and organisational strategy",
+      "Organisational culture and governance",
+      "Entrepreneurship and business growth",
+      "AI-enabled transformation",
+      "Adult social care and public service",
+      "Community and economic development across Africa",
     ],
     values: [
       "[Placeholder value — e.g. Integrity in leadership]",

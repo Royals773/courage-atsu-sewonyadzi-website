@@ -13,7 +13,7 @@ export function FutureCoursesSection() {
         <SectionHeading
           eyebrow="Coming soon"
           title="Courses and Learning Programmes Coming Soon"
-          description="A future home for structured, practical learning on leadership, care quality and entrepreneurship — built on the same experience behind the books and speaking work."
+          description="A future home for structured, practical learning on leadership, strategy and entrepreneurship — built on the same experience behind the books and speaking work."
           align="center"
         />
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">

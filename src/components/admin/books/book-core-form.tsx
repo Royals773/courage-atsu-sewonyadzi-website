@@ -34,6 +34,8 @@ interface BookCoreFormProps {
     popularity_score: number;
     key_lessons: string[];
     who_its_for: string[];
+    why_it_matters: string | null;
+    practical_outcomes: string[];
     table_of_contents: { title: string }[];
     book_category_books: { category_id: string }[];
   };
@@ -179,12 +181,12 @@ export function BookCoreForm({ book, categories }: BookCoreFormProps) {
           </div>
 
           <div>
-            <Label htmlFor="key_lessons">Key lessons (one per line)</Label>
+            <Label htmlFor="why_it_matters">Why it matters</Label>
             <Textarea
-              id="key_lessons"
-              name="key_lessons"
-              defaultValue={book?.key_lessons.join("\n") ?? ""}
-              rows={4}
+              id="why_it_matters"
+              name="why_it_matters"
+              defaultValue={book?.why_it_matters ?? ""}
+              rows={2}
               className="mt-1.5"
             />
           </div>
@@ -196,6 +198,28 @@ export function BookCoreForm({ book, categories }: BookCoreFormProps) {
               name="who_its_for"
               defaultValue={book?.who_its_for.join("\n") ?? ""}
               rows={3}
+              className="mt-1.5"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="practical_outcomes">Practical outcomes (one per line)</Label>
+            <Textarea
+              id="practical_outcomes"
+              name="practical_outcomes"
+              defaultValue={book?.practical_outcomes.join("\n") ?? ""}
+              rows={3}
+              className="mt-1.5"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="key_lessons">Leadership insights (one per line)</Label>
+            <Textarea
+              id="key_lessons"
+              name="key_lessons"
+              defaultValue={book?.key_lessons.join("\n") ?? ""}
+              rows={4}
               className="mt-1.5"
             />
           </div>

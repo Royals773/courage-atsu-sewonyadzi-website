@@ -26,7 +26,7 @@ export async function LatestInsights() {
           <SectionHeading
             eyebrow="Insights"
             title="Latest insights"
-            description="Writing on leadership, care quality, business and building across borders."
+            description="Writing on leadership, strategy, culture and building organisations that last."
           />
           <Button
             variant="outline"

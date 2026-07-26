@@ -10,7 +10,7 @@ import { BackendUnavailable } from "@/components/shared/backend-unavailable";
 export const metadata: Metadata = buildMetadata({
   title: "Books",
   description:
-    "Browse the full catalogue of books on leadership, business, personal development, care quality and African opportunity.",
+    "Browse the full catalogue of books on leadership, strategy, business, personal development, adult social care and African opportunity.",
   path: "/books",
 });
 

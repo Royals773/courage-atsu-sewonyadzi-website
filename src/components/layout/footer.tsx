@@ -43,8 +43,8 @@ export async function Footer() {
           <div>
             <p className="text-sm font-semibold">Stay in touch</p>
             <p className="mt-4 text-sm text-muted-foreground">
-              Occasional insights on leadership, care quality and building
-              across borders. No spam.
+              Occasional insights on leadership, strategy and building
+              organisations that last. No spam.
             </p>
             <FooterNewsletterForm />
           </div>

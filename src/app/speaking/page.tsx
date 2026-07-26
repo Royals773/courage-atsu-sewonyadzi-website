@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
     title: "Speaking",
     description:
-      "Book a keynote or workshop on leadership, resilient organisations, care quality and building across borders.",
+      "Book a keynote or workshop on leadership, organisational culture, strategy and building institutions that last.",
     path: "/speaking",
     image: photoUrl,
   });

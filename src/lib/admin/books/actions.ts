@@ -40,6 +40,8 @@ interface BookFormValues {
   popularity_score: number;
   key_lessons: string[];
   who_its_for: string[];
+  why_it_matters: string | null;
+  practical_outcomes: string[];
   table_of_contents: { title: string }[];
 }
 
@@ -61,6 +63,8 @@ function parseBookForm(formData: FormData): BookFormValues {
     popularity_score: Number(formData.get("popularity_score") ?? 0) || 0,
     key_lessons: linesToArray(formData.get("key_lessons")),
     who_its_for: linesToArray(formData.get("who_its_for")),
+    why_it_matters: (formData.get("why_it_matters")?.toString().trim() || null) ?? null,
+    practical_outcomes: linesToArray(formData.get("practical_outcomes")),
     table_of_contents: linesToArray(formData.get("table_of_contents")).map((line) => ({
       title: line,
     })),

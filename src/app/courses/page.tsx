@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = buildMetadata({
   title: "Courses",
   description:
-    "Structured learning programmes on leadership, care quality and entrepreneurship — coming soon. Join the priority list.",
+    "Structured learning programmes on leadership, strategy and entrepreneurship — coming soon. Join the priority list.",
   path: "/courses",
 });
 
@@ -113,7 +113,7 @@ export default function CoursesPage() {
                     <Input
                       id="courses-interest"
                       name="interest"
-                      placeholder="Leadership, care quality, entrepreneurship"
+                      placeholder="Leadership, strategy, entrepreneurship"
                       className="mt-1.5"
                       disabled
                     />
