@@ -1,0 +1,21 @@
+# Supabase project configuration.
+# Used by the Supabase CLI (`supabase link`, `supabase db push`,
+# `supabase migration up`) once this project is linked to a real Supabase
+# project. See README.md for setup steps.
+
+project_id = "author-speaker-website"
+
+[db]
+port = 54322
+major_version = 17
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[studio]
+enabled = true
+port = 54323

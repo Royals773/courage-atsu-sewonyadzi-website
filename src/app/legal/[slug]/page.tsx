@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { legalPages, getLegalPageBySlug } from "@/lib/content/legal";
+import { buildMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 
 export function generateStaticParams() {
@@ -16,7 +17,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = getLegalPageBySlug(slug);
   if (!page) return {};
-  return { title: page.title };
+  return buildMetadata({
+    title: page.title,
+    description: `${page.title} for this site's books, digital products and speaking services.`,
+    path: `/legal/${page.slug}`,
+  });
 }
 
 export default async function LegalPage({

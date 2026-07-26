@@ -2,23 +2,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { blogPosts, getPostBySlug } from "@/lib/content/blog-posts";
+import { getPostBySlug, getPublishedPosts } from "@/lib/blog/queries";
+import { renderMarkdown } from "@/lib/markdown";
 import { siteConfig } from "@/lib/content/site-config";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { buildMetadata } from "@/lib/seo";
 import { Badge } from "@/components/ui/badge";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
+import { CmsImage } from "@/components/shared/cms-image";
 import { ShareLinks } from "@/components/shared/share-links";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 function formatDate(dateString: string) {
+  if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-}
-
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -27,12 +27,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
-  return {
-    title: post.title,
-    description: post.excerpt,
-  };
+  return buildMetadata({
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt,
+    path: `/insights/${post.slug}`,
+    image: post.featuredImageUrl,
+    type: "article",
+  });
 }
 
 export default async function InsightPage({
@@ -41,13 +44,14 @@ export default async function InsightPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const index = blogPosts.findIndex((p) => p.id === post.id);
-  const previousPost = blogPosts[index - 1];
-  const nextPost = blogPosts[index + 1];
-  const relatedPosts = blogPosts
+  const [allPosts, general] = await Promise.all([getPublishedPosts(), getSettingGroup("general")]);
+  const index = allPosts.findIndex((p) => p.id === post.id);
+  const previousPost = allPosts[index - 1];
+  const nextPost = allPosts[index + 1];
+  const relatedPosts = allPosts
     .filter((p) => p.id !== post.id && p.category === post.category)
     .slice(0, 2);
   const shareUrl = `${siteConfig.siteUrl}/insights/${post.slug}`;
@@ -57,6 +61,7 @@ export default async function InsightPage({
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
+    image: post.featuredImageUrl ?? undefined,
     datePublished: post.publishedAt,
     author: {
       "@type": "Person",
@@ -70,9 +75,7 @@ export default async function InsightPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
-      <Badge variant="secondary" className="capitalize">
-        {post.category.replace(/-/g, " ")}
-      </Badge>
+      <Badge variant="secondary">{post.category}</Badge>
       <h1 className="mt-4 text-balance font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
         {post.title}
       </h1>
@@ -88,15 +91,13 @@ export default async function InsightPage({
       </div>
 
       <div className="mt-8">
-        <ImagePlaceholder
-          label={`Cover image placeholder — ${post.title}`}
-          aspect="wide"
-        />
+        <CmsImage src={post.featuredImageUrl} alt={`Cover image — ${post.title}`} aspect="wide" priority />
       </div>
 
-      <div className="mt-8 max-w-none text-pretty text-base leading-relaxed text-foreground/90">
-        <p>{post.content}</p>
-      </div>
+      <div
+        className="prose-content mt-8 max-w-none text-pretty text-base leading-relaxed text-foreground/90"
+        dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+      />
 
       <ShareLinks url={shareUrl} title={post.title} className="mt-10 flex flex-wrap gap-2" />
 
@@ -107,7 +108,7 @@ export default async function InsightPage({
         <div>
           <p className="font-heading font-semibold">{post.author}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {siteConfig.shortBio}
+            {general.shortBio}
           </p>
         </div>
       </div>

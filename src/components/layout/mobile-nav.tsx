@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, ShoppingBag, User } from "lucide-react";
 
-import { mainNav, siteConfig } from "@/lib/content/site-config";
+import { mainNav } from "@/lib/content/site-config";
 import { Button } from "@/components/ui/button";
+import { useBasket } from "@/components/basket/basket-provider";
 import {
   Sheet,
   SheetContent,
@@ -14,8 +15,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export function MobileNav() {
+export function MobileNav({ isSignedIn, brandName }: { isSignedIn: boolean; brandName: string }) {
   const [open, setOpen] = useState(false);
+  const { itemCount } = useBasket();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -28,7 +30,7 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-xs">
         <SheetHeader>
-          <SheetTitle>{siteConfig.brandName}</SheetTitle>
+          <SheetTitle>{brandName}</SheetTitle>
         </SheetHeader>
         <nav
           aria-label="Mobile"
@@ -48,19 +50,26 @@ export function MobileNav() {
           <Link
             href="/basket"
             onClick={() => setOpen(false)}
+            className="flex items-center justify-between gap-2 rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-muted"
+          >
+            <span className="flex items-center gap-2">
+              <ShoppingBag className="size-4" aria-hidden="true" />
+              Basket
+            </span>
+            {itemCount > 0 ? (
+              <span className="rounded-full bg-gold px-2 py-0.5 text-xs font-semibold text-gold-foreground">
+                {itemCount}
+              </span>
+            ) : null}
+          </Link>
+          <Link
+            href={isSignedIn ? "/account/orders" : "/account/sign-in"}
+            onClick={() => setOpen(false)}
             className="flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-foreground hover:bg-muted"
           >
-            <ShoppingBag className="size-4" aria-hidden="true" />
-            Basket
-          </Link>
-          <span
-            aria-disabled="true"
-            title="Account access is coming soon"
-            className="flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground/60"
-          >
             <User className="size-4" aria-hidden="true" />
-            Account (coming soon)
-          </span>
+            {isSignedIn ? "Your Account" : "Sign In"}
+          </Link>
           <Button
             className="mt-3"
             render={

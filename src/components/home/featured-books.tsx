@@ -1,12 +1,14 @@
 import Link from "next/link";
 
-import { getFeaturedBooks } from "@/lib/content/books";
+import { getFeaturedBooks } from "@/lib/books/queries";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { BookCard } from "@/components/shared/book-card";
 
-export function FeaturedBooks() {
-  const books = getFeaturedBooks();
+export async function FeaturedBooks() {
+  const books = await getFeaturedBooks();
+
+  if (books.length === 0) return null;
 
   return (
     <section className="border-b border-border py-16 sm:py-20">

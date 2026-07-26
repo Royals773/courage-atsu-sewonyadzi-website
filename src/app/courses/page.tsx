@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { courses } from "@/lib/content/courses";
+import { buildMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,11 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Courses",
   description:
     "Structured learning programmes on leadership, care quality and entrepreneurship — coming soon. Join the priority list.",
-};
+  path: "/courses",
+});
 
 const categories = [
   { label: "Leadership", value: "leadership" },

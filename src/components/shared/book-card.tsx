@@ -1,26 +1,52 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Loader2, Star } from "lucide-react";
+import { toast } from "sonner";
 
 import type { Book } from "@/lib/content/types";
+import { formatPrice } from "@/lib/format";
+import { useBasket } from "@/components/basket/basket-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  }).format(price);
-}
+import { CmsImage } from "@/components/shared/cms-image";
 
 export function BookCard({ book }: { book: Book }) {
+  const { addItem } = useBasket();
+  const [isAdding, setIsAdding] = useState(false);
   const lowestPrice = Math.min(...book.formats.map((f) => f.price));
+  const defaultFormat =
+    book.formats.find((f) => f.stockStatus !== "out-of-stock") ?? book.formats[0];
+  const soldOut = !defaultFormat || defaultFormat.stockStatus === "out-of-stock";
+
+  async function handleAddToBasket() {
+    if (!defaultFormat) return;
+    setIsAdding(true);
+    try {
+      await addItem(defaultFormat.id, 1);
+      toast.success(`Added "${book.title}" to your basket`, {
+        description: defaultFormat.label,
+      });
+    } catch (error) {
+      toast.error("Couldn't add this to your basket", {
+        description: error instanceof Error ? error.message : "Please try again.",
+      });
+    } finally {
+      setIsAdding(false);
+    }
+  }
 
   return (
     <Card className="h-full">
       <Link href={`/books/${book.slug}`} className="block px-4 pt-4">
-        <ImagePlaceholder label={book.coverImageLabel} aspect="portrait" />
+        <CmsImage
+          src={book.coverImageUrl}
+          alt={book.coverImageLabel}
+          aspect="portrait"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+        />
       </Link>
       <CardContent className="flex flex-1 flex-col gap-2">
         {book.isNew ? <Badge className="w-fit">New</Badge> : null}
@@ -55,9 +81,17 @@ export function BookCard({ book }: { book: Book }) {
         </Button>
         <Button
           className="flex-1"
-          render={<Link href={`/books/${book.slug}`} />}
+          disabled={soldOut || isAdding}
+          onClick={handleAddToBasket}
+          aria-label={isAdding ? `Adding ${book.title} to basket…` : undefined}
         >
-          Buy Now
+          {isAdding ? (
+            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          ) : soldOut ? (
+            "Out of Stock"
+          ) : (
+            "Add to Basket"
+          )}
         </Button>
       </CardFooter>
     </Card>

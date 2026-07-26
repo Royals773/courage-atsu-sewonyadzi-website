@@ -1,10 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { siteConfig } from "@/lib/content/site-config";
+import { getSettingGroup } from "@/lib/settings/queries";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { BasketProvider } from "@/components/basket/basket-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,51 +22,96 @@ const fraunces = Fraunces({
   axes: ["opsz"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.siteUrl),
-  title: {
-    default: `${siteConfig.brandName} — Author, Speaker & Consultant`,
-    template: `%s | ${siteConfig.brandName}`,
-  },
-  description: siteConfig.tagline,
-  openGraph: {
-    title: `${siteConfig.brandName} — Author, Speaker & Consultant`,
-    description: siteConfig.tagline,
-    url: siteConfig.siteUrl,
-    siteName: siteConfig.brandName,
-    locale: "en_GB",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${siteConfig.brandName} — Author, Speaker & Consultant`,
-    description: siteConfig.tagline,
-  },
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "oklch(0.985 0.006 85)" },
+    { media: "(prefers-color-scheme: dark)", color: "oklch(0.19 0.025 262)" },
+  ],
 };
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const [seo, general] = await Promise.all([
+    getSettingGroup("seo"),
+    getSettingGroup("general"),
+  ]);
+
+  return {
+    metadataBase: new URL(siteConfig.siteUrl),
+    title: {
+      default: seo.defaultTitle,
+      template: `%s | ${general.brandName}`,
+    },
+    description: seo.defaultDescription,
+    openGraph: {
+      title: seo.defaultTitle,
+      description: seo.defaultDescription,
+      url: siteConfig.siteUrl,
+      siteName: general.brandName,
+      locale: "en_GB",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.defaultTitle,
+      description: seo.defaultDescription,
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [general, social] = await Promise.all([
+    getSettingGroup("general"),
+    getSettingGroup("social"),
+  ]);
+  const colorOverrides = [
+    general.primaryColor ? `--primary: ${general.primaryColor};` : "",
+    general.accentColor ? `--gold: ${general.accentColor}; --ring: ${general.accentColor};` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: general.brandName,
+    url: siteConfig.siteUrl,
+    description: general.shortBio,
+    sameAs: [social.linkedin, social.instagram, social.youtube, social.x].filter(Boolean),
+  };
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+        {colorOverrides ? <style>{`:root { ${colorOverrides} }`}</style> : null}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
         >
           Skip to content
         </a>
-        <Header />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <BasketProvider>
+          <Header />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </BasketProvider>
         <Toaster />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

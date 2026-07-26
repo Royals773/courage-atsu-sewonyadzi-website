@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { siteConfig } from "@/lib/content/site-config";
-import { faqs } from "@/lib/content/faqs";
+import { getFaqs } from "@/lib/faqs/queries";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { buildMetadata } from "@/lib/seo";
 import { PageHeader } from "@/components/shared/page-header";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,12 +17,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Contact",
   description: "Get in touch for general, speaking or media enquiries.",
-};
+  path: "/contact",
+});
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [faqs, contact, social] = await Promise.all([
+    getFaqs(),
+    getSettingGroup("contact"),
+    getSettingGroup("social"),
+  ]);
   const generalFaqs = faqs.filter((f) => f.category === "general-enquiries");
 
   return (
@@ -81,10 +88,10 @@ export default function ContactPage() {
                 General enquiries
               </h2>
               <a
-                href={`mailto:${siteConfig.contactEmail}`}
+                href={`mailto:${contact.email}`}
                 className="mt-1 block text-muted-foreground underline"
               >
-                {siteConfig.contactEmail}
+                {contact.email}
               </a>
             </div>
             <div>
@@ -103,15 +110,15 @@ export default function ContactPage() {
                 Media enquiries
               </h2>
               <a
-                href={`mailto:${siteConfig.mediaEmail}`}
+                href={`mailto:${contact.mediaEmail}`}
                 className="mt-1 block text-muted-foreground underline"
               >
-                {siteConfig.mediaEmail}
+                {contact.mediaEmail}
               </a>
             </div>
             <div>
               <h2 className="font-heading text-lg font-semibold">Follow</h2>
-              <SocialLinks className="mt-2 flex flex-wrap gap-2" />
+              <SocialLinks className="mt-2 flex flex-wrap gap-2" social={social} />
             </div>
           </div>
         </div>

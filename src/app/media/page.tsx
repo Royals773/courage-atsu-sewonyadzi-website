@@ -1,114 +1,103 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ExternalLink, FileText, Mic, Newspaper, Radio, Video } from "lucide-react";
 
-import { mediaItems } from "@/lib/content/media";
-import { siteConfig } from "@/lib/content/site-config";
+import { getPublishedPressItems } from "@/lib/press/queries";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { buildMetadata } from "@/lib/seo";
+import type { PressItemType } from "@/lib/supabase/database.types";
 import { PageHeader } from "@/components/shared/page-header";
-import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
 
-export const metadata: Metadata = {
-  title: "Media",
-  description:
-    "Media kit, biography, headshots, and press, podcast and video appearances.",
+export const metadata: Metadata = buildMetadata({
+  title: "Media & Press",
+  description: "Interviews, podcasts, publications, videos and press releases.",
+  path: "/media",
+});
+
+const TYPE_LABELS: Record<PressItemType, string> = {
+  interview: "Interview",
+  podcast: "Podcast",
+  publication: "Publication",
+  video: "Video",
+  press_release: "Press Release",
 };
 
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
+const TYPE_ICONS: Record<PressItemType, React.ElementType> = {
+  interview: Mic,
+  podcast: Radio,
+  publication: Newspaper,
+  video: Video,
+  press_release: FileText,
+};
 
-export default function MediaPage() {
+export default async function MediaPage() {
+  const [items, contact] = await Promise.all([
+    getPublishedPressItems(),
+    getSettingGroup("contact"),
+  ]);
+
   return (
     <>
       <PageHeader
         eyebrow="Media"
         title="Media and press"
-        description="Illustrative sample appearances shown below — replace with real coverage before launch."
+        description="Interviews, podcast appearances, publications, videos and press releases."
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
-            <h2 className="font-heading text-2xl font-semibold">
-              Short biography
-            </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder short biography — 2-3 sentences suitable for event
-              programmes and quick press use.]
-            </p>
+      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+        {items.length === 0 ? (
+          <p className="text-center text-muted-foreground">Press coverage will be listed here soon.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {items.map((item) => {
+              const Icon = TYPE_ICONS[item.type];
+              return (
+                <Card key={item.id} className={item.isFeatured ? "border-gold" : undefined}>
+                  <CardContent>
+                    <div className="flex items-center gap-2">
+                      <Icon className="size-4 text-gold" aria-hidden="true" />
+                      <Badge variant="secondary">{TYPE_LABELS[item.type]}</Badge>
+                    </div>
+                    <h2 className="mt-3 font-heading text-lg font-semibold">{item.title}</h2>
+                    {item.publicationName ? (
+                      <p className="mt-1 text-sm text-muted-foreground">{item.publicationName}</p>
+                    ) : null}
+                    {item.description ? (
+                      <p className="mt-2 text-sm text-foreground/90">{item.description}</p>
+                    ) : null}
+                    {item.url ? (
+                      <Link
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-gold"
+                      >
+                        View <ExternalLink className="size-3.5" aria-hidden="true" />
+                      </Link>
+                    ) : null}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
-          <div>
-            <h2 className="font-heading text-2xl font-semibold">
-              Long biography
-            </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder long biography — a fuller account of background,
-              expertise and achievements suitable for detailed press
-              features.]
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-y border-border py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading eyebrow="Assets" title="Headshots and book covers" align="center" />
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <ImagePlaceholder label="Headshot placeholder 1" aspect="portrait" />
-            <ImagePlaceholder label="Headshot placeholder 2" aspect="portrait" />
-            <ImagePlaceholder label="Book cover placeholder 1" aspect="portrait" />
-            <ImagePlaceholder label="Book cover placeholder 2" aspect="portrait" />
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="Appearances" title="Press, podcasts and interviews" />
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {mediaItems.map((item) => (
-            <Card key={item.id}>
-              <CardContent>
-                <Badge variant="secondary" className="w-fit capitalize">
-                  {item.type}
-                </Badge>
-                <h3 className="mt-3 font-heading text-base font-semibold">
-                  {item.title}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {item.outlet} · {formatDate(item.date)}
-                </p>
-                <p className="mt-2 text-sm text-foreground/90">
-                  {item.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <p className="mt-6 text-xs text-muted-foreground/70">
-          Sample appearances shown for illustrative purposes only.
-        </p>
+        )}
       </div>
 
       <div className="border-t border-border py-14 text-center">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-2xl font-semibold">
-            Media enquiries
-          </h2>
+          <h2 className="font-heading text-2xl font-semibold">Media enquiries</h2>
           <p className="mt-3 text-muted-foreground">
             For interviews, features or press enquiries, contact{" "}
-            <a href={`mailto:${siteConfig.mediaEmail}`} className="underline">
-              {siteConfig.mediaEmail}
+            <a href={`mailto:${contact.mediaEmail}`} className="underline">
+              {contact.mediaEmail}
             </a>
             .
           </p>
-          <Button className="mt-6" disabled title="Media kit download coming soon">
-            Download Media Kit
+          <Button className="mt-6" render={<Link href="/media-kit" />}>
+            View Media Kit
           </Button>
         </div>
       </div>

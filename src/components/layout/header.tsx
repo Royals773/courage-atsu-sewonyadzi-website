@@ -1,19 +1,31 @@
 import Link from "next/link";
-import { Search, ShoppingBag, User } from "lucide-react";
+import Image from "next/image";
+import { Search, User } from "lucide-react";
 
-import { mainNav, siteConfig } from "@/lib/content/site-config";
+import { mainNav } from "@/lib/content/site-config";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { getCurrentUser } from "@/lib/auth/session";
+import { getLogoUrl } from "@/lib/settings/logo";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { BasketButton } from "@/components/basket/basket-button";
 
-export function Header() {
+export async function Header() {
+  const [user, general] = await Promise.all([getCurrentUser(), getSettingGroup("general")]);
+  const logoUrl = general.logoPath ? await getLogoUrl(general.logoPath) : null;
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="flex items-center font-heading text-lg font-semibold tracking-tight"
         >
-          {siteConfig.brandName}
+          {logoUrl ? (
+            <Image src={logoUrl} alt={general.brandName} width={140} height={36} className="h-9 w-auto" />
+          ) : (
+            general.brandName
+          )}
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:flex lg:items-center lg:gap-1">
@@ -37,23 +49,14 @@ export function Header() {
           >
             <Search aria-hidden="true" />
           </Button>
+          <BasketButton className="hidden sm:inline-flex" />
           <Button
             variant="ghost"
             size="icon"
             className="hidden sm:inline-flex"
-            render={<Link href="/basket" aria-label="View basket" />}
-          >
-            <ShoppingBag aria-hidden="true" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hidden sm:inline-flex opacity-50"
-            aria-disabled="true"
-            title="Account access is coming soon"
+            render={<Link href={user ? "/account/orders" : "/account/sign-in"} aria-label="Account" />}
           >
             <User aria-hidden="true" />
-            <span className="sr-only">Account (coming soon)</span>
           </Button>
           <Button
             className="hidden md:inline-flex"
@@ -62,7 +65,7 @@ export function Header() {
             Book Me to Speak
           </Button>
           <div className="lg:hidden">
-            <MobileNav />
+            <MobileNav isSignedIn={Boolean(user)} brandName={general.brandName} />
           </div>
         </div>
       </div>

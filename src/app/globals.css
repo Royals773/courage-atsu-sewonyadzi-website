@@ -146,6 +146,36 @@
   }
 }
 
+/* Baseline styling for Markdown-rendered blog content (no typography
+   plugin installed — see the Step 4 report). */
+.prose-content h2 {
+  @apply mt-8 mb-3 font-heading text-2xl font-semibold;
+}
+.prose-content h3 {
+  @apply mt-6 mb-2 font-heading text-xl font-semibold;
+}
+.prose-content p {
+  @apply mb-4;
+}
+.prose-content ul {
+  @apply mb-4 list-disc space-y-1 pl-6;
+}
+.prose-content ol {
+  @apply mb-4 list-decimal space-y-1 pl-6;
+}
+.prose-content a {
+  @apply underline underline-offset-2 hover:text-gold;
+}
+.prose-content blockquote {
+  @apply my-4 border-l-2 border-gold pl-4 text-muted-foreground italic;
+}
+.prose-content code {
+  @apply rounded bg-muted px-1 py-0.5 text-sm;
+}
+.prose-content img {
+  @apply my-4 rounded-lg;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

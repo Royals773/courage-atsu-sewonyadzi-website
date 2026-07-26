@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { books, getBookBySlug } from "@/lib/content/books";
-import { faqs } from "@/lib/content/faqs";
-import { testimonials } from "@/lib/content/testimonials";
+import { getBookBySlug, getPublishedBooks } from "@/lib/books/queries";
+import { getFaqs } from "@/lib/faqs/queries";
+import { getApprovedTestimonials } from "@/lib/testimonials/queries";
 import { siteConfig } from "@/lib/content/site-config";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { buildMetadata } from "@/lib/seo";
 import { BookCard } from "@/components/shared/book-card";
+import { BookCoverGallery } from "@/components/books/book-cover-gallery";
+import { BookPurchasePanel } from "@/components/books/book-purchase-panel";
 import { ShareLinks } from "@/components/shared/share-links";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,29 +22,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  }).format(price);
-}
-
-export function generateStaticParams() {
-  return books.map((book) => ({ slug: book.slug }));
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const book = getBookBySlug(slug);
+  const book = await getBookBySlug(slug);
   if (!book) return {};
-  return {
+  return buildMetadata({
     title: book.title,
-    description: book.description,
-  };
+    description: book.description || book.subtitle,
+    path: `/books/${book.slug}`,
+    image: book.coverImageUrl,
+  });
 }
 
 export default async function BookPage({
@@ -50,23 +44,58 @@ export default async function BookPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const book = getBookBySlug(slug);
+  const book = await getBookBySlug(slug);
   if (!book) notFound();
 
-  const relatedBooks = books.filter((b) => b.id !== book.id).slice(0, 2);
+  const [allBooks, faqs, testimonials, general] = await Promise.all([
+    getPublishedBooks(),
+    getFaqs(),
+    getApprovedTestimonials(),
+    getSettingGroup("general"),
+  ]);
+  const relatedBooks = allBooks.filter((b) => b.id !== book.id).slice(0, 2);
   const bookFaqs = faqs.filter((f) =>
     ["book-orders", "delivery", "digital-downloads", "refunds"].includes(
       f.category
     )
   );
-  const endorsements = testimonials.filter((t) => t.category === "book-review");
+  const endorsements = testimonials.filter((t) => t.category === "books");
   const shareUrl = `${siteConfig.siteUrl}/books/${book.slug}`;
+
+  const bookJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: book.title,
+    description: book.description,
+    author: { "@type": "Person", name: general.brandName },
+    image: book.coverImageUrl ?? undefined,
+    datePublished: book.publicationDate || undefined,
+    offers: book.formats.map((format) => ({
+      "@type": "Offer",
+      name: format.label,
+      price: format.price,
+      priceCurrency: format.currency,
+      availability:
+        format.stockStatus === "out-of-stock"
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+    })),
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bookJsonLd) }}
+      />
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[380px_1fr] lg:gap-16">
         <div>
-          <ImagePlaceholder label={book.coverImageLabel} aspect="portrait" />
+          <BookCoverGallery
+            coverLabel={book.coverImageLabel}
+            coverUrl={book.coverImageUrl}
+            galleryLabels={book.galleryImageLabels}
+            galleryUrls={book.galleryImageUrls}
+          />
           <ShareLinks url={shareUrl} title={book.title} className="mt-6 flex flex-wrap gap-2" />
         </div>
 
@@ -77,7 +106,7 @@ export default async function BookPage({
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">{book.subtitle}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            By {siteConfig.brandName}
+            By {general.brandName}
           </p>
 
           <p className="mt-6 text-pretty text-foreground/90">
@@ -86,50 +115,7 @@ export default async function BookPage({
 
           <Separator className="my-6" />
 
-          <div className="space-y-3">
-            <p className="text-sm font-semibold">Available formats</p>
-            {book.formats.map((format) => (
-              <div
-                key={format.id}
-                className="flex items-center justify-between rounded-lg border border-border px-4 py-3"
-              >
-                <div>
-                  <p className="text-sm font-medium">{format.label}</p>
-                  <p className="text-xs text-muted-foreground capitalize">
-                    {format.stockStatus.replace("-", " ")}
-                  </p>
-                </div>
-                <p className="font-heading text-base font-semibold">
-                  {formatPrice(format.price)}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" className="flex-1" disabled title="Basket arrives in Phase 2">
-              Add to Basket
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="flex-1"
-              disabled
-              title="Checkout arrives in Phase 2"
-            >
-              Buy Now
-            </Button>
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Basket and checkout go live in Phase 2 — quantity selection and
-            purchasing will be enabled then.
-          </p>
-
-          {book.hasSampleChapter ? (
-            <Button variant="link" className="mt-4 h-auto p-0" disabled>
-              Download sample chapter (available in Phase 2)
-            </Button>
-          ) : null}
+          <BookPurchasePanel book={book} />
         </div>
       </div>
 

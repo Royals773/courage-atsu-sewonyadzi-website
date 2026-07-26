@@ -1,12 +1,13 @@
 import Link from "next/link";
 
-import { getLatestPosts } from "@/lib/content/blog-posts";
+import { getPublishedPosts } from "@/lib/blog/queries";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
+import { CmsImage } from "@/components/shared/cms-image";
 
 function formatDate(dateString: string) {
+  if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
@@ -14,8 +15,9 @@ function formatDate(dateString: string) {
   });
 }
 
-export function LatestInsights() {
-  const posts = getLatestPosts(3);
+export async function LatestInsights() {
+  const posts = (await getPublishedPosts()).slice(0, 3);
+  if (posts.length === 0) return null;
 
   return (
     <section className="border-b border-border py-16 sm:py-20">
@@ -39,14 +41,16 @@ export function LatestInsights() {
             <Link key={post.id} href={`/insights/${post.slug}`}>
               <Card className="h-full transition-shadow hover:shadow-md">
                 <div className="px-4 pt-4">
-                  <ImagePlaceholder
-                    label={`Cover image placeholder — ${post.title}`}
+                  <CmsImage
+                    src={post.featuredImageUrl}
+                    alt={`Cover image — ${post.title}`}
                     aspect="landscape"
+                    sizes="(min-width: 640px) 33vw, 100vw"
                   />
                 </div>
                 <CardContent className="flex flex-col gap-2">
                   <p className="text-xs font-medium tracking-wide text-gold uppercase">
-                    {post.category.replace(/-/g, " ")}
+                    {post.category}
                   </p>
                   <h3 className="font-heading text-lg font-semibold leading-snug">
                     {post.title}

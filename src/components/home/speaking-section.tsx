@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { PlayCircle } from "lucide-react";
 
-import { speakingTopics } from "@/lib/content/speaking-topics";
+import { getFeaturedSpeakingTopics } from "@/lib/speaking/topics";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ImagePlaceholder } from "@/components/shared/image-placeholder";
 import { Badge } from "@/components/ui/badge";
 
-export function SpeakingSection() {
+export async function SpeakingSection() {
+  const topics = await getFeaturedSpeakingTopics();
+
   return (
     <section className="border-b border-border py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -18,13 +20,15 @@ export function SpeakingSection() {
               title="Speaking that moves organisations to act"
               description="From boardrooms to conference stages, sessions are built on frontline experience — practical, honest and built to be applied the next day."
             />
-            <div className="mt-6 flex flex-wrap gap-2">
-              {speakingTopics.slice(0, 4).map((topic) => (
-                <Badge key={topic.id} variant="secondary">
-                  {topic.title}
-                </Badge>
-              ))}
-            </div>
+            {topics.length > 0 ? (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {topics.slice(0, 4).map((topic) => (
+                  <Badge key={topic.id} variant="secondary">
+                    {topic.title}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
             <div className="mt-8 flex flex-wrap gap-4">
               <Button size="lg" render={<Link href="/speaking/enquiry" />}>
                 Book Me to Speak

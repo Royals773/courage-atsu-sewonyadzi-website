@@ -1,4 +1,4 @@
-import { getFeaturedTestimonials } from "@/lib/content/testimonials";
+import { getApprovedTestimonials } from "@/lib/testimonials/queries";
 import { SectionHeading } from "@/components/shared/section-heading";
 import {
   Avatar,
@@ -15,8 +15,9 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export function TestimonialsSection() {
-  const testimonials = getFeaturedTestimonials();
+export async function TestimonialsSection() {
+  const testimonials = (await getApprovedTestimonials()).filter((t) => t.isFeatured);
+  if (testimonials.length === 0) return null;
 
   return (
     <section className="border-b border-border bg-secondary/30 py-16 sm:py-20">
@@ -24,7 +25,6 @@ export function TestimonialsSection() {
         <SectionHeading
           eyebrow="Testimonials"
           title="What readers, organisers and clients say"
-          description="Illustrative placeholder testimonials — replace with real, approved feedback before launch."
           align="center"
         />
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -53,9 +53,6 @@ export function TestimonialsSection() {
             </Card>
           ))}
         </div>
-        <p className="mt-6 text-center text-xs text-muted-foreground/70">
-          Sample testimonials shown for illustrative purposes only.
-        </p>
       </div>
     </section>
   );

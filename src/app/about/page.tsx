@@ -1,39 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { siteConfig } from "@/lib/content/site-config";
+import { getSettingGroup } from "@/lib/settings/queries";
+import { getAuthorPhotoUrl } from "@/lib/settings/logo";
+import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
-import { ImagePlaceholder } from "@/components/shared/image-placeholder";
+import { CmsImage } from "@/components/shared/cms-image";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 
-const timeline = [
-  { year: "[Year]", label: "[Placeholder milestone — e.g. started career in the care sector]" },
-  { year: "[Year]", label: "[Placeholder milestone — e.g. moved into strategic leadership]" },
-  { year: "[Year]", label: "[Placeholder milestone — e.g. first speaking engagement]" },
-  { year: "[Year]", label: "[Placeholder milestone — e.g. first book published]" },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const [general, about] = await Promise.all([
+    getSettingGroup("general"),
+    getSettingGroup("about"),
+  ]);
+  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  return buildMetadata({
+    title: "About",
+    description: about.heroIntro,
+    path: "/about",
+    image: photoUrl,
+  });
+}
 
-const values = [
-  "[Placeholder value — e.g. Integrity in leadership]",
-  "[Placeholder value — e.g. Practical, evidence-based thinking]",
-  "[Placeholder value — e.g. Building across communities and borders]",
-];
+export default async function AboutPage() {
+  const [general, about] = await Promise.all([
+    getSettingGroup("general"),
+    getSettingGroup("about"),
+  ]);
+  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
 
-const expertiseAreas = [
-  "Leadership development",
-  "Care quality and compliance",
-  "Organisational resilience",
-  "Entrepreneurship and cross-border investment",
-];
-
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "The background, journey and mission behind the books and speaking work.",
-};
-
-export default function AboutPage() {
   return (
     <>
       <section className="border-b border-border bg-secondary/30">
@@ -43,14 +39,19 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
-              {siteConfig.brandName}
+              {general.brandName}
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-lg text-muted-foreground">
-              [Placeholder personal background — a few sentences on who you
-              are, where you started, and what led to this work.]
+              {about.heroIntro}
             </p>
           </div>
-          <ImagePlaceholder label="Professional photograph placeholder" aspect="portrait" />
+          <CmsImage
+            src={photoUrl}
+            alt={`Professional photograph of ${general.brandName}`}
+            aspect="portrait"
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
         </div>
       </section>
 
@@ -60,38 +61,25 @@ export default function AboutPage() {
             <h2 className="font-heading text-2xl font-semibold">
               Professional journey
             </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder — outline the professional path from frontline
-              work through to strategic leadership, consulting, writing and
-              speaking.]
-            </p>
+            <p className="mt-4 text-pretty text-foreground/90">{about.professionalJourney}</p>
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold">
               Leadership experience
             </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder — summarise leadership roles and the kinds of
-              organisations and teams led.]
-            </p>
+            <p className="mt-4 text-pretty text-foreground/90">{about.leadershipExperience}</p>
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold">
               Motivation for writing
             </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder — why these books exist and who they were written
-              for.]
-            </p>
+            <p className="mt-4 text-pretty text-foreground/90">{about.motivationForWriting}</p>
           </div>
           <div>
             <h2 className="font-heading text-2xl font-semibold">
               Speaking mission
             </h2>
-            <p className="mt-4 text-pretty text-foreground/90">
-              [Placeholder — what speaking work is meant to achieve for
-              audiences and organisations.]
-            </p>
+            <p className="mt-4 text-pretty text-foreground/90">{about.speakingMission}</p>
           </div>
         </div>
       </section>
@@ -104,7 +92,7 @@ export default function AboutPage() {
                 Areas of expertise
               </h2>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
-                {expertiseAreas.map((area) => (
+                {about.expertiseAreas.map((area) => (
                   <li key={area}>{area}</li>
                 ))}
               </ul>
@@ -112,7 +100,7 @@ export default function AboutPage() {
             <div>
               <h2 className="font-heading text-2xl font-semibold">Values</h2>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-foreground/90">
-                {values.map((value) => (
+                {about.values.map((value) => (
                   <li key={value}>{value}</li>
                 ))}
               </ul>
@@ -125,8 +113,8 @@ export default function AboutPage() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Timeline" title="Personal timeline" />
           <ol className="mt-8 space-y-6 border-l border-border pl-6">
-            {timeline.map((item) => (
-              <li key={item.label} className="relative">
+            {about.timeline.map((item) => (
+              <li key={`${item.year}-${item.label}`} className="relative">
                 <span className="absolute -left-[1.6rem] top-1 size-2.5 rounded-full bg-gold" />
                 <p className="text-sm font-semibold text-gold">{item.year}</p>
                 <p className="mt-1 text-foreground/90">{item.label}</p>
@@ -140,13 +128,10 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Selected achievements" title="Selected achievements" align="center" />
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Card key={i}>
+            {about.achievements.map((achievement) => (
+              <Card key={achievement}>
                 <CardContent>
-                  <p className="text-sm text-foreground/90">
-                    [Placeholder achievement {i} — replace with a real,
-                    verifiable accomplishment.]
-                  </p>
+                  <p className="text-sm text-foreground/90">{achievement}</p>
                 </CardContent>
               </Card>
             ))}
@@ -157,10 +142,7 @@ export default function AboutPage() {
       <section className="border-b border-border py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-2xl font-semibold">Media biography</h2>
-          <p className="mt-4 text-pretty text-foreground/90">
-            [Placeholder short-form biography suitable for event programmes
-            and press use. See the Media page for the full media kit.]
-          </p>
+          <p className="mt-4 text-pretty text-foreground/90">{about.mediaBiography}</p>
           <Button
             variant="outline"
             className="mt-4"

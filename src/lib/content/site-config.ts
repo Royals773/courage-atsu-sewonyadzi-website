@@ -1,4 +1,4 @@
-import type { CredibilityStat, NavItem } from "./types";
+import type { NavItem } from "./types";
 
 /**
  * Single source of truth for brand-level copy. Replace the placeholder
@@ -53,6 +53,8 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
       { label: "Testimonials", href: "/testimonials" },
       { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
+      { label: "Media Kit", href: "/media-kit" },
+      { label: "Video Library", href: "/videos" },
     ],
   },
   {
@@ -66,15 +68,3 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
   },
 ];
 
-/**
- * Do not invent statistics. Every value below is a clearly-labelled
- * placeholder until real figures are supplied.
- */
-export const credibilityStats: CredibilityStat[] = [
-  { label: "Years of experience", valuePlaceholder: "[X]+" },
-  { label: "People reached", valuePlaceholder: "[X]" },
-  { label: "Organisations supported", valuePlaceholder: "[X]" },
-  { label: "Books published", valuePlaceholder: "[X]" },
-  { label: "Speaking engagements delivered", valuePlaceholder: "[X]" },
-  { label: "Countries & communities reached", valuePlaceholder: "[X]" },
-];

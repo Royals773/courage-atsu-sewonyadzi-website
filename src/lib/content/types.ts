@@ -49,24 +49,27 @@ export interface Book {
   description: string;
   authorNote: string;
   coverImageLabel: string;
+  coverImageUrl: string | null;
+  /** Additional cover-gallery placeholder images shown alongside the main cover. */
+  galleryImageLabels: string[];
+  /** Same length/order as galleryImageLabels; null entries fall back to a placeholder. */
+  galleryImageUrls: (string | null)[];
   categories: BookCategory[];
   formats: BookFormat[];
   publicationDate: string;
   featured: boolean;
   isNew: boolean;
   ratingPlaceholder: true;
+  /**
+   * Internal "Most Popular" sort signal (higher = more popular). A stand-in
+   * until real order/sales aggregation exists (see the Phase 4 admin
+   * roadmap) — never rendered to users as a stat.
+   */
+  popularityScore: number;
   keyLessons: string[];
   whoItsFor: string[];
   tableOfContents: TableOfContentsEntry[];
   hasSampleChapter: boolean;
-}
-
-export interface SpeakingTopic {
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  audienceOutcomes: string[];
 }
 
 export type TestimonialCategory =
@@ -143,26 +146,10 @@ export interface FaqItem {
   category: FaqCategory;
 }
 
-export type MediaItemType = "press" | "podcast" | "interview" | "video";
-
-export interface MediaItem {
-  id: string;
-  type: MediaItemType;
-  title: string;
-  outlet: string;
-  date: string;
-  description: string;
-  isFictionalPlaceholder: true;
-}
 
 export interface NavItem {
   label: string;
   href: string;
-}
-
-export interface CredibilityStat {
-  label: string;
-  valuePlaceholder: string;
 }
 
 export interface LegalPageSection {
