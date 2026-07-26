@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, User } from "lucide-react";
 
-import { mainNav } from "@/lib/content/site-config";
+import { mainNav, siteConfig } from "@/lib/content/site-config";
 import { getSettingGroup } from "@/lib/settings/queries";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getLogoUrl } from "@/lib/settings/logo";
@@ -11,8 +11,8 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { BasketButton } from "@/components/basket/basket-button";
 
 export async function Header() {
-  const [user, general] = await Promise.all([getCurrentUser(), getSettingGroup("general")]);
-  const logoUrl = general.logoPath ? await getLogoUrl(general.logoPath) : null;
+  const [user, brand] = await Promise.all([getCurrentUser(), getSettingGroup("brand")]);
+  const logoUrl = (brand.logoPath ? await getLogoUrl(brand.logoPath) : null) ?? siteConfig.assets.logoHorizontal;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -21,11 +21,7 @@ export async function Header() {
           href="/"
           className="flex items-center font-heading text-lg font-semibold tracking-tight"
         >
-          {logoUrl ? (
-            <Image src={logoUrl} alt={general.brandName} width={140} height={36} className="h-9 w-auto" />
-          ) : (
-            general.brandName
-          )}
+          <Image src={logoUrl} alt={brand.displayName} width={220} height={40} className="h-8 w-auto sm:h-9" priority />
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:flex lg:items-center lg:gap-1">
@@ -65,7 +61,7 @@ export async function Header() {
             Book Me to Speak
           </Button>
           <div className="lg:hidden">
-            <MobileNav isSignedIn={Boolean(user)} brandName={general.brandName} />
+            <MobileNav isSignedIn={Boolean(user)} displayName={brand.displayName} />
           </div>
         </div>
       </div>

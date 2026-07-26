@@ -10,14 +10,16 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   saveAboutSettingsAction,
+  saveBrandSettingsAction,
   saveContactSettingsAction,
   saveCredibilitySettingsAction,
-  saveGeneralSettingsAction,
   saveHeroSettingsAction,
   saveSeoSettingsAction,
   saveSocialSettingsAction,
   uploadAuthorPhotoAction,
   uploadLogoAction,
+  uploadMonogramAction,
+  uploadOgImageAction,
 } from "@/lib/admin/settings/actions";
 
 export const metadata: Metadata = { title: "Settings" };
@@ -25,8 +27,8 @@ export const metadata: Metadata = { title: "Settings" };
 export default async function AdminSettingsPage() {
   await requireAdmin("administrator");
 
-  const [general, contact, social, seo, hero, about, credibility] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, contact, social, seo, hero, about, credibility] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("contact"),
     getSettingGroup("social"),
     getSettingGroup("seo"),
@@ -41,60 +43,191 @@ export default async function AdminSettingsPage() {
     <>
       <AdminPageHeader
         title="Settings"
-        description="Brand, contact, social, SEO, homepage hero, about page and credibility content."
+        description="Brand identity, contact, social, SEO, homepage hero, about page and credibility content."
       />
 
       <div className="space-y-6">
         <ImageUploadForm
           title="Logo"
-          hasImage={Boolean(general.logoPath)}
-          emptyNote="No logo uploaded — the brand name is shown as text."
+          hasImage={Boolean(brand.logoPath)}
+          emptyNote="No logo uploaded — the default wordmark (public/brand/logo-horizontal.svg) is shown."
           action={uploadLogoAction}
         />
 
         <ImageUploadForm
+          title="Monogram"
+          hasImage={Boolean(brand.monogramPath)}
+          emptyNote="No monogram uploaded — the default mark (public/brand/monogram.svg) is used where space is limited."
+          action={uploadMonogramAction}
+        />
+
+        <ImageUploadForm
           title="Author photo"
-          hasImage={Boolean(general.authorPhotoPath)}
+          hasImage={Boolean(brand.authorPhotoPath)}
           emptyNote="No photo uploaded — a placeholder is shown on the homepage, about and speaking pages."
           action={uploadAuthorPhotoAction}
         />
 
-        <SettingsForm title="General" action={saveGeneralSettingsAction}>
-          <div>
-            <Label htmlFor="brandName">Brand name</Label>
-            <Input id="brandName" name="brandName" defaultValue={general.brandName} className="mt-1.5" />
-          </div>
-          <div>
-            <Label htmlFor="tagline">Tagline</Label>
-            <Input id="tagline" name="tagline" defaultValue={general.tagline} className="mt-1.5" />
-          </div>
-          <div>
-            <Label htmlFor="shortBio">Short bio</Label>
-            <Textarea id="shortBio" name="shortBio" defaultValue={general.shortBio} rows={3} className="mt-1.5" />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <ImageUploadForm
+          title="Default social share image"
+          hasImage={Boolean(brand.ogImagePath)}
+          emptyNote="No custom image uploaded — the default branded card (public/brand/og-default.png) is used for link previews."
+          action={uploadOgImageAction}
+        />
+
+        <SettingsForm title="Brand identity" action={saveBrandSettingsAction}>
+          <div className="space-y-4 border-b border-border pb-4">
+            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Identity</p>
             <div>
-              <Label htmlFor="primaryColor">Primary colour (OKLCH or hex)</Label>
+              <Label htmlFor="fullName">Full name</Label>
+              <Input id="fullName" name="fullName" defaultValue={brand.fullName} className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="displayName">Display name</Label>
+              <Input id="displayName" name="displayName" defaultValue={brand.displayName} className="mt-1.5" />
+              <p className="mt-1 text-xs text-muted-foreground">Shown in the header, footer and page titles.</p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="initials">Initials</Label>
+                <Input id="initials" name="initials" defaultValue={brand.initials} className="mt-1.5" />
+              </div>
+              <div>
+                <Label htmlFor="tagline">Tagline</Label>
+                <Input id="tagline" name="tagline" defaultValue={brand.tagline} className="mt-1.5" />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="positioningStatement">Professional positioning statement</Label>
               <Input
-                id="primaryColor"
-                name="primaryColor"
-                defaultValue={general.primaryColor ?? ""}
-                placeholder="Leave blank for default"
+                id="positioningStatement"
+                name="positioningStatement"
+                defaultValue={brand.positioningStatement}
+                className="mt-1.5"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4 border-b border-border py-4">
+            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Positioning &amp; bio</p>
+            <div>
+              <Label htmlFor="shortBio">Short bio</Label>
+              <Textarea id="shortBio" name="shortBio" defaultValue={brand.shortBio} rows={2} className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="longBiography">Long biography</Label>
+              <Textarea
+                id="longBiography"
+                name="longBiography"
+                defaultValue={brand.longBiography}
+                rows={6}
                 className="mt-1.5"
               />
             </div>
             <div>
-              <Label htmlFor="accentColor">Accent colour (OKLCH or hex)</Label>
-              <Input
-                id="accentColor"
-                name="accentColor"
-                defaultValue={general.accentColor ?? ""}
-                placeholder="Leave blank for default"
-                className="mt-1.5"
-              />
+              <Label htmlFor="mission">Mission</Label>
+              <Textarea id="mission" name="mission" defaultValue={brand.mission} rows={2} className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="vision">Vision</Label>
+              <Textarea id="vision" name="vision" defaultValue={brand.vision} rows={2} className="mt-1.5" />
             </div>
           </div>
-          <input type="hidden" name="logoPath" value={general.logoPath ?? ""} />
+
+          <div className="space-y-4 border-b border-border py-4">
+            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Contact &amp; legal</p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="phone">Telephone</Label>
+                <Input id="phone" name="phone" defaultValue={brand.phone} placeholder="Not yet provided" className="mt-1.5" />
+              </div>
+              <div>
+                <Label htmlFor="location">Location</Label>
+                <Input
+                  id="location"
+                  name="location"
+                  defaultValue={brand.location}
+                  placeholder="Not yet provided"
+                  className="mt-1.5"
+                />
+              </div>
+              <div>
+                <Label htmlFor="emailSenderName">Email sender name</Label>
+                <Input id="emailSenderName" name="emailSenderName" defaultValue={brand.emailSenderName} className="mt-1.5" />
+              </div>
+              <div>
+                <Label htmlFor="copyrightName">Copyright name</Label>
+                <Input id="copyrightName" name="copyrightName" defaultValue={brand.copyrightName} className="mt-1.5" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4 pt-4">
+            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Colours &amp; type</p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div>
+                <Label htmlFor="primaryColor">Primary colour</Label>
+                <Input
+                  id="primaryColor"
+                  name="primaryColor"
+                  defaultValue={brand.primaryColor ?? ""}
+                  placeholder="Leave blank for default"
+                  className="mt-1.5"
+                />
+              </div>
+              <div>
+                <Label htmlFor="accentColor">Accent colour</Label>
+                <Input
+                  id="accentColor"
+                  name="accentColor"
+                  defaultValue={brand.accentColor ?? ""}
+                  placeholder="Leave blank for default"
+                  className="mt-1.5"
+                />
+              </div>
+              <div>
+                <Label htmlFor="secondaryColor">Secondary accent colour</Label>
+                <Input
+                  id="secondaryColor"
+                  name="secondaryColor"
+                  defaultValue={brand.secondaryColor ?? ""}
+                  placeholder="Leave blank for default"
+                  className="mt-1.5"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="headingFont">Heading font</Label>
+                <select
+                  id="headingFont"
+                  name="headingFont"
+                  defaultValue={brand.headingFont}
+                  className="mt-1.5 h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="fraunces">Fraunces (default)</option>
+                  <option value="playfair-display">Playfair Display</option>
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="bodyFont">Body font</Label>
+                <select
+                  id="bodyFont"
+                  name="bodyFont"
+                  defaultValue={brand.bodyFont}
+                  className="mt-1.5 h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="inter">Inter (default)</option>
+                  <option value="source-sans-3">Source Sans 3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" name="logoPath" value={brand.logoPath ?? ""} />
+          <input type="hidden" name="monogramPath" value={brand.monogramPath ?? ""} />
+          <input type="hidden" name="authorPhotoPath" value={brand.authorPhotoPath ?? ""} />
+          <input type="hidden" name="ogImagePath" value={brand.ogImagePath ?? ""} />
         </SettingsForm>
 
         <SettingsForm title="Homepage hero" action={saveHeroSettingsAction}>

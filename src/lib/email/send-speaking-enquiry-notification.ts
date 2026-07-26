@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getResendClient } from "./resend-client";
+import { siteConfig } from "@/lib/content/site-config";
+import { getSettingGroup } from "@/lib/settings/queries";
 import { logger } from "@/lib/logger";
 
 interface SpeakingEnquiryNotificationInput {
@@ -21,7 +23,7 @@ interface SpeakingEnquiryNotificationInput {
 
 function row(label: string, value: string | number | null) {
   if (value === null || value === "") return "";
-  return `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;white-space:nowrap;">${label}</td><td style="padding:4px 0;color:#1c2333;">${value}</td></tr>`;
+  return `<tr><td style="padding:4px 12px 4px 0;color:#6b7280;white-space:nowrap;">${label}</td><td style="padding:4px 0;color:#131f35;">${value}</td></tr>`;
 }
 
 export async function sendSpeakingEnquiryNotification(
@@ -31,10 +33,14 @@ export async function sendSpeakingEnquiryNotification(
   if (!fromEmail) return;
 
   try {
+    const brand = await getSettingGroup("brand");
+    const senderName = brand.emailSenderName || siteConfig.emailSenderName;
+
     const resend = getResendClient();
     const html = `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
-        <h1 style="font-size:18px;color:#1c2333;">New speaking enquiry</h1>
+        <p style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:#131f35;margin:0 0 20px;border-bottom:2px solid #dbb155;padding-bottom:10px;">${brand.displayName}</p>
+        <h1 style="font-size:18px;color:#131f35;">New speaking enquiry</h1>
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
           ${row("Organisation", input.organisation)}
           ${row("Contact", input.contactName)}
@@ -48,12 +54,12 @@ export async function sendSpeakingEnquiryNotification(
           ${row("Budget", input.budgetRange)}
           ${row("Preferred topic", input.preferredTopic)}
         </table>
-        ${input.notes ? `<p style="font-size:14px;color:#1c2333;"><strong>Notes:</strong><br/>${input.notes}</p>` : ""}
+        ${input.notes ? `<p style="font-size:14px;color:#131f35;"><strong>Notes:</strong><br/>${input.notes}</p>` : ""}
       </div>
     `;
 
     await resend.emails.send({
-      from: fromEmail,
+      from: `${senderName} <${fromEmail}>`,
       to: input.to,
       replyTo: input.email,
       subject: `New speaking enquiry — ${input.organisation}`,

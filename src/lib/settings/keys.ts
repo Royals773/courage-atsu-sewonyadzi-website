@@ -8,14 +8,38 @@ import { siteConfig } from "@/lib/content/site-config";
  * looks identical until an admin actually changes something.
  */
 
-export interface GeneralSettings {
-  brandName: string;
+export type HeadingFontOption = "fraunces" | "playfair-display";
+export type BodyFontOption = "inter" | "source-sans-3";
+
+/**
+ * The dedicated Brand Settings group — identity, positioning, contact
+ * details, logo/asset overrides, and design tokens. This is the
+ * admin-editable layer on top of the static defaults in
+ * src/lib/content/site-config.ts (see that file's fallback logic).
+ */
+export interface BrandSettings {
+  fullName: string;
+  displayName: string;
+  initials: string;
+  positioningStatement: string;
   tagline: string;
   shortBio: string;
+  longBiography: string;
+  mission: string;
+  vision: string;
+  phone: string;
+  location: string;
+  emailSenderName: string;
+  copyrightName: string;
   logoPath: string | null;
+  monogramPath: string | null;
   authorPhotoPath: string | null;
+  ogImagePath: string | null;
   primaryColor: string | null;
   accentColor: string | null;
+  secondaryColor: string | null;
+  headingFont: HeadingFontOption;
+  bodyFont: BodyFontOption;
 }
 
 export interface ContactSettings {
@@ -81,15 +105,30 @@ export interface CredibilitySettings {
 }
 
 export const SETTINGS_DEFAULTS = {
-  general: {
-    brandName: siteConfig.brandName,
+  brand: {
+    fullName: siteConfig.fullName,
+    displayName: siteConfig.displayName,
+    initials: siteConfig.initials,
+    positioningStatement: siteConfig.positioningStatement,
     tagline: siteConfig.tagline,
     shortBio: siteConfig.shortBio,
+    longBiography: siteConfig.longBiography,
+    mission: siteConfig.mission,
+    vision: siteConfig.vision,
+    phone: siteConfig.phone,
+    location: siteConfig.location,
+    emailSenderName: siteConfig.emailSenderName,
+    copyrightName: siteConfig.copyrightName,
     logoPath: null,
+    monogramPath: null,
     authorPhotoPath: null,
+    ogImagePath: null,
     primaryColor: null,
     accentColor: null,
-  } satisfies GeneralSettings,
+    secondaryColor: null,
+    headingFont: "fraunces",
+    bodyFont: "inter",
+  } satisfies BrandSettings,
   contact: {
     email: siteConfig.contactEmail,
     speakingEmail: siteConfig.speakingEmail,
@@ -102,12 +141,13 @@ export const SETTINGS_DEFAULTS = {
     x: siteConfig.social.x,
   } satisfies SocialSettings,
   seo: {
-    defaultTitle: `${siteConfig.brandName} — Author, Speaker & Consultant`,
+    defaultTitle: `${siteConfig.fullName} — ${siteConfig.positioningStatement}`,
     defaultDescription: siteConfig.tagline,
   } satisfies SeoSettings,
   hero: {
-    headline: "Helping leaders build stronger organisations, better systems and meaningful impact.",
-    subheading: siteConfig.shortBio,
+    headline: "Helping leaders build stronger care systems, sound strategy and lasting impact.",
+    subheading:
+      "An author, keynote speaker and adult social care strategist helping organisations build stronger leadership, systems and impact.",
   } satisfies HeroSettings,
   speaking: {
     introduction:
@@ -121,7 +161,7 @@ export const SETTINGS_DEFAULTS = {
       "Understand how to apply the ideas within their own team or organisation",
     ],
     industries: [
-      "Healthcare and care services",
+      "Adult social care and healthcare services",
       "Financial services",
       "Technology",
       "Government and public sector",
@@ -131,19 +171,20 @@ export const SETTINGS_DEFAULTS = {
   } satisfies SpeakingSettings,
   about: {
     heroIntro:
-      "[Placeholder personal background — a few sentences on who you are, where you started, and what led to this work.]",
+      "[Placeholder personal background — a few sentences on who you are, where you started, and what led to this work. Content pending final approval.]",
     professionalJourney:
-      "[Placeholder — outline the professional path from frontline work through to strategic leadership, consulting, writing and speaking.]",
+      "[Placeholder — outline the professional path from frontline adult social care work through to strategic leadership, consulting, writing and speaking. Content pending final approval.]",
     leadershipExperience:
-      "[Placeholder — summarise leadership roles and the kinds of organisations and teams led.]",
-    motivationForWriting: "[Placeholder — why these books exist and who they were written for.]",
+      "[Placeholder — summarise leadership roles and the kinds of care organisations and teams led. Content pending final approval.]",
+    motivationForWriting: "[Placeholder — why these books exist and who they were written for. Content pending final approval.]",
     speakingMission:
-      "[Placeholder — what speaking work is meant to achieve for audiences and organisations.]",
+      "[Placeholder — what speaking work is meant to achieve for audiences and organisations. Content pending final approval.]",
     expertiseAreas: [
+      "Adult social care strategy",
       "Leadership development",
       "Care quality and compliance",
       "Organisational resilience",
-      "Entrepreneurship and cross-border investment",
+      "Entrepreneurship",
     ],
     values: [
       "[Placeholder value — e.g. Integrity in leadership]",
@@ -151,18 +192,18 @@ export const SETTINGS_DEFAULTS = {
       "[Placeholder value — e.g. Building across communities and borders]",
     ],
     timeline: [
-      { year: "[Year]", label: "[Placeholder milestone — e.g. started career in the care sector]" },
+      { year: "[Year]", label: "[Placeholder milestone — e.g. started career in adult social care]" },
       { year: "[Year]", label: "[Placeholder milestone — e.g. moved into strategic leadership]" },
       { year: "[Year]", label: "[Placeholder milestone — e.g. first speaking engagement]" },
       { year: "[Year]", label: "[Placeholder milestone — e.g. first book published]" },
     ],
     achievements: [
-      "[Placeholder achievement 1 — replace with a real, verifiable accomplishment.]",
-      "[Placeholder achievement 2 — replace with a real, verifiable accomplishment.]",
-      "[Placeholder achievement 3 — replace with a real, verifiable accomplishment.]",
+      "Content pending final approval — replace with a real, verifiable accomplishment.",
+      "Content pending final approval — replace with a real, verifiable accomplishment.",
+      "Content pending final approval — replace with a real, verifiable accomplishment.",
     ],
     mediaBiography:
-      "[Placeholder short-form biography suitable for event programmes and press use. See the Media page for the full media kit.]",
+      "[Placeholder short-form biography suitable for event programmes and press use. See the Media page for the full media kit. Content pending final approval.]",
   } satisfies AboutSettings,
   credibility: {
     yearsExperience: "[X]+",

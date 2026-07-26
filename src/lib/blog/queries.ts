@@ -52,7 +52,7 @@ async function mapPost(row: {
     excerpt: row.excerpt ?? "",
     content: row.content,
     category: row.blog_categories?.name ?? "Uncategorised",
-    author: siteConfig.brandName,
+    author: siteConfig.displayName,
     publishedAt: row.published_at ?? "",
     readingTimeMinutes: estimateReadingTime(row.content),
     featuredImagePath: row.featured_image_path,

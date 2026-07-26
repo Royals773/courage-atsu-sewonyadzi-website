@@ -6,8 +6,8 @@ import { SocialLinks } from "@/components/shared/social-links";
 import { FooterNewsletterForm } from "@/components/layout/footer-newsletter-form";
 
 export async function Footer() {
-  const [general, contact, social] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, contact, social] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("contact"),
     getSettingGroup("social"),
   ]);
@@ -17,8 +17,8 @@ export async function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr_1fr_1fr_1.4fr]">
           <div>
-            <p className="font-heading text-lg font-semibold">{general.brandName}</p>
-            <p className="mt-3 max-w-xs text-sm text-muted-foreground">{general.shortBio}</p>
+            <p className="font-heading text-lg font-semibold">{brand.displayName}</p>
+            <p className="mt-3 max-w-xs text-sm text-muted-foreground">{brand.shortBio}</p>
             <SocialLinks className="mt-5 flex flex-wrap gap-2" social={social} />
           </div>
 
@@ -52,7 +52,7 @@ export async function Footer() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} {general.brandName}. All
+            &copy; {new Date().getFullYear()} {brand.copyrightName}. All
             rights reserved.
           </p>
           <div className="flex gap-4">

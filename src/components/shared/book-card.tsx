@@ -49,7 +49,7 @@ export function BookCard({ book }: { book: Book }) {
         />
       </Link>
       <CardContent className="flex flex-1 flex-col gap-2">
-        {book.isNew ? <Badge className="w-fit">New</Badge> : null}
+        {book.isNew ? <Badge className="w-fit bg-burgundy text-white">New</Badge> : null}
         <Link href={`/books/${book.slug}`}>
           <h3 className="font-heading text-lg font-semibold leading-snug hover:underline">
             {book.title}

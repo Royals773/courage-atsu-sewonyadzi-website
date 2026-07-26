@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export function MobileNav({ isSignedIn, brandName }: { isSignedIn: boolean; brandName: string }) {
+export function MobileNav({ isSignedIn, displayName }: { isSignedIn: boolean; displayName: string }) {
   const [open, setOpen] = useState(false);
   const { itemCount } = useBasket();
 
@@ -30,7 +30,7 @@ export function MobileNav({ isSignedIn, brandName }: { isSignedIn: boolean; bran
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-xs">
         <SheetHeader>
-          <SheetTitle>{brandName}</SheetTitle>
+          <SheetTitle className="text-balance">{displayName}</SheetTitle>
         </SheetHeader>
         <nav
           aria-label="Mobile"

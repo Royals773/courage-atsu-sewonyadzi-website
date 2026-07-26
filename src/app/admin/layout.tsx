@@ -17,10 +17,10 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, general] = await Promise.all([requireAdmin(), getSettingGroup("general")]);
+  const [session, brand] = await Promise.all([requireAdmin(), getSettingGroup("brand")]);
 
   return (
-    <AdminShell session={session} brandName={general.brandName}>
+    <AdminShell session={session} brandName={brand.displayName}>
       {children}
     </AdminShell>
   );

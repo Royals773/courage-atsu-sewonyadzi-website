@@ -6,18 +6,18 @@ import { Button } from "@/components/ui/button";
 import { CmsImage } from "@/components/shared/cms-image";
 
 export async function AboutPreview() {
-  const [general, about] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, about] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("about"),
   ]);
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
 
   return (
     <section className="border-b border-border py-16 sm:py-20">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <CmsImage
           src={photoUrl}
-          alt={`Professional photograph of ${general.brandName}`}
+          alt={`Professional photograph of ${brand.displayName}`}
           aspect="landscape"
           sizes="(min-width: 1024px) 50vw, 100vw"
         />
@@ -26,10 +26,10 @@ export async function AboutPreview() {
             About
           </p>
           <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
-            {general.brandName}
+            {brand.displayName}
           </h2>
           <p className="mt-4 text-pretty text-base text-muted-foreground sm:text-lg">
-            {general.shortBio} {about.heroIntro}
+            {brand.shortBio} {about.heroIntro}
           </p>
           <Button
             variant="outline"

@@ -5,6 +5,7 @@ import { CheckCircle2 } from "lucide-react";
 
 import { getSpeakingTopicBySlug } from "@/lib/speaking/topics";
 import { buildMetadata } from "@/lib/seo";
+import { siteConfig } from "@/lib/content/site-config";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,8 +37,27 @@ export default async function SpeakingTopicPage({ params }: TopicPageProps) {
   const topic = await getSpeakingTopicBySlug(slug);
   if (!topic) notFound();
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.siteUrl },
+      { "@type": "ListItem", position: 2, name: "Speaking", item: `${siteConfig.siteUrl}/speaking` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: topic.title,
+        item: `${siteConfig.siteUrl}/speaking/topics/${topic.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <PageHeader eyebrow="Speaking Topic" title={topic.title} description={topic.summary} />
 
       <div className="mx-auto max-w-5xl space-y-14 px-4 py-14 sm:px-6 lg:px-8">

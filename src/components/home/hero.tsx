@@ -7,18 +7,18 @@ import { Button } from "@/components/ui/button";
 import { CmsImage } from "@/components/shared/cms-image";
 
 export async function Hero() {
-  const [general, hero] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, hero] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("hero"),
   ]);
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
 
   return (
     <section className="border-b border-border bg-secondary/30">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-24 lg:px-8">
         <div>
           <p className="mb-4 text-sm font-medium tracking-wide text-gold uppercase">
-            {general.tagline}
+            {brand.tagline}
           </p>
           <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
             {hero.headline}
@@ -48,7 +48,7 @@ export async function Hero() {
         </div>
         <CmsImage
           src={photoUrl}
-          alt={`Professional photograph of ${general.brandName}`}
+          alt={`Professional photograph of ${brand.displayName}`}
           aspect="portrait"
           priority
           className="mx-auto w-full max-w-md lg:max-w-none"

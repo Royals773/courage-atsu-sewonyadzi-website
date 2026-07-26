@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/accordion";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const general = await getSettingGroup("general");
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const brand = await getSettingGroup("brand");
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
   return buildMetadata({
     title: "Speaking",
     description:
@@ -36,14 +36,14 @@ export async function generateMetadata(): Promise<Metadata> {
 const BOOK_TESTIMONIAL_CATEGORY = "books";
 
 export default async function SpeakingPage() {
-  const [topics, allTestimonials, allFaqs, speaking, general] = await Promise.all([
+  const [topics, allTestimonials, allFaqs, speaking, brand] = await Promise.all([
     getPublishedSpeakingTopics(),
     getApprovedTestimonials(),
     getFaqs(),
     getSettingGroup("speaking"),
-    getSettingGroup("general"),
+    getSettingGroup("brand"),
   ]);
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
   const testimonials = allTestimonials
     .filter((t) => t.category !== BOOK_TESTIMONIAL_CATEGORY)
     .slice(0, 3);
@@ -76,7 +76,7 @@ export default async function SpeakingPage() {
           </div>
           <CmsImage
             src={photoUrl}
-            alt={`Professional photograph of ${general.brandName}`}
+            alt={`Professional photograph of ${brand.displayName}`}
             aspect="portrait"
             priority
             sizes="(min-width: 1024px) 50vw, 100vw"

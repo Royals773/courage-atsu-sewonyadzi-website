@@ -47,7 +47,7 @@ export default async function InsightPage({
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const [allPosts, general] = await Promise.all([getPublishedPosts(), getSettingGroup("general")]);
+  const [allPosts, brand] = await Promise.all([getPublishedPosts(), getSettingGroup("brand")]);
   const index = allPosts.findIndex((p) => p.id === post.id);
   const previousPost = allPosts[index - 1];
   const nextPost = allPosts[index + 1];
@@ -108,7 +108,7 @@ export default async function InsightPage({
         <div>
           <p className="font-heading font-semibold">{post.author}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {general.shortBio}
+            {brand.shortBio}
           </p>
         </div>
       </div>

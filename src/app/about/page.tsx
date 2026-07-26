@@ -10,11 +10,11 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [general, about] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, about] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("about"),
   ]);
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
   return buildMetadata({
     title: "About",
     description: about.heroIntro,
@@ -24,11 +24,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [general, about] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, about] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("about"),
   ]);
-  const photoUrl = general.authorPhotoPath ? await getAuthorPhotoUrl(general.authorPhotoPath) : null;
+  const photoUrl = brand.authorPhotoPath ? await getAuthorPhotoUrl(brand.authorPhotoPath) : null;
 
   return (
     <>
@@ -39,7 +39,7 @@ export default async function AboutPage() {
               About
             </p>
             <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
-              {general.brandName}
+              {brand.displayName}
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-lg text-muted-foreground">
               {about.heroIntro}
@@ -47,7 +47,7 @@ export default async function AboutPage() {
           </div>
           <CmsImage
             src={photoUrl}
-            alt={`Professional photograph of ${general.brandName}`}
+            alt={`Professional photograph of ${brand.displayName}`}
             aspect="portrait"
             priority
             sizes="(min-width: 1024px) 50vw, 100vw"

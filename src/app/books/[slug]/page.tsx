@@ -47,11 +47,11 @@ export default async function BookPage({
   const book = await getBookBySlug(slug);
   if (!book) notFound();
 
-  const [allBooks, faqs, testimonials, general] = await Promise.all([
+  const [allBooks, faqs, testimonials, brand] = await Promise.all([
     getPublishedBooks(),
     getFaqs(),
     getApprovedTestimonials(),
-    getSettingGroup("general"),
+    getSettingGroup("brand"),
   ]);
   const relatedBooks = allBooks.filter((b) => b.id !== book.id).slice(0, 2);
   const bookFaqs = faqs.filter((f) =>
@@ -67,7 +67,7 @@ export default async function BookPage({
     "@type": "Book",
     name: book.title,
     description: book.description,
-    author: { "@type": "Person", name: general.brandName },
+    author: { "@type": "Person", name: brand.displayName },
     image: book.coverImageUrl ?? undefined,
     datePublished: book.publicationDate || undefined,
     offers: book.formats.map((format) => ({
@@ -100,13 +100,13 @@ export default async function BookPage({
         </div>
 
         <div>
-          {book.isNew ? <Badge className="mb-3">New</Badge> : null}
+          {book.isNew ? <Badge className="mb-3 bg-burgundy text-white">New</Badge> : null}
           <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             {book.title}
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">{book.subtitle}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            By {general.brandName}
+            By {brand.displayName}
           </p>
 
           <p className="mt-6 text-pretty text-foreground/90">

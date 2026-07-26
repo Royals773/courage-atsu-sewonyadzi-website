@@ -32,23 +32,30 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [seo, general] = await Promise.all([
+  const [seo, brand] = await Promise.all([
     getSettingGroup("seo"),
-    getSettingGroup("general"),
+    getSettingGroup("brand"),
   ]);
 
   return {
     metadataBase: new URL(siteConfig.siteUrl),
     title: {
       default: seo.defaultTitle,
-      template: `%s | ${general.brandName}`,
+      template: `%s | ${brand.displayName}`,
     },
     description: seo.defaultDescription,
+    icons: {
+      icon: [
+        { url: siteConfig.assets.favicon, type: "image/svg+xml" },
+        { url: siteConfig.assets.icon, type: "image/svg+xml", sizes: "any" },
+      ],
+      apple: siteConfig.assets.appleTouchIcon,
+    },
     openGraph: {
       title: seo.defaultTitle,
       description: seo.defaultDescription,
       url: siteConfig.siteUrl,
-      siteName: general.brandName,
+      siteName: brand.displayName,
       locale: "en_GB",
       type: "website",
     },
@@ -65,13 +72,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [general, social] = await Promise.all([
-    getSettingGroup("general"),
+  const [brand, social, contact] = await Promise.all([
+    getSettingGroup("brand"),
     getSettingGroup("social"),
+    getSettingGroup("contact"),
   ]);
   const colorOverrides = [
-    general.primaryColor ? `--primary: ${general.primaryColor};` : "",
-    general.accentColor ? `--gold: ${general.accentColor}; --ring: ${general.accentColor};` : "",
+    brand.primaryColor ? `--primary: ${brand.primaryColor};` : "",
+    brand.accentColor ? `--gold: ${brand.accentColor}; --ring: ${brand.accentColor};` : "",
+    brand.secondaryColor ? `--burgundy: ${brand.secondaryColor};` : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -79,9 +88,13 @@ export default async function RootLayout({
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: general.brandName,
+    name: brand.fullName,
+    alternateName: brand.initials,
+    jobTitle: brand.positioningStatement,
     url: siteConfig.siteUrl,
-    description: general.shortBio,
+    description: brand.shortBio,
+    email: contact.email || undefined,
+    telephone: brand.phone || undefined,
     sameAs: [social.linkedin, social.instagram, social.youtube, social.x].filter(Boolean),
   };
 
