@@ -4,6 +4,7 @@ import { getSettingGroup } from "@/lib/settings/queries";
 import { getAuthorPhotoUrl } from "@/lib/settings/logo";
 import { Button } from "@/components/ui/button";
 import { CmsImage } from "@/components/shared/cms-image";
+import { Reveal } from "@/components/shared/reveal";
 
 export async function AboutPreview() {
   const [brand, about] = await Promise.all([
@@ -15,13 +16,16 @@ export async function AboutPreview() {
   return (
     <section className="border-b border-border py-16 sm:py-20">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
-        <CmsImage
-          src={photoUrl}
-          alt={`Professional photograph of ${brand.displayName}`}
-          aspect="landscape"
-          sizes="(min-width: 1024px) 50vw, 100vw"
-        />
-        <div>
+        <Reveal>
+          <CmsImage
+            src={photoUrl}
+            alt={`Professional photograph of ${brand.displayName}`}
+            aspect="landscape"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="shadow-lg shadow-foreground/5 ring-1 ring-foreground/5"
+          />
+        </Reveal>
+        <Reveal delay={120}>
           <p className="mb-3 text-sm font-medium tracking-wide text-gold uppercase">
             About
           </p>
@@ -38,7 +42,7 @@ export async function AboutPreview() {
           >
             Read the full story
           </Button>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { Reveal } from "@/components/shared/reveal";
 
 export function NewsletterSection() {
   const [state, formAction, isPending] = useActionState(subscribeToNewsletterAction, {});
@@ -17,13 +18,15 @@ export function NewsletterSection() {
   return (
     <section className="border-b border-border bg-primary py-16 text-primary-foreground sm:py-20">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Free guide"
-          title="Get the free guide: 5 Systems Every Leader Needs"
-          description="Join the mailing list for occasional insights on leadership, strategy and building organisations that last — plus the free guide as a welcome gift."
-          align="center"
-          className="[&_p]:text-primary-foreground/80 [&_h2]:text-primary-foreground"
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow="Free guide"
+            title="Get the free guide: 5 Systems Every Leader Needs"
+            description="Join the mailing list for occasional insights on leadership, strategy and building organisations that last — plus the free guide as a welcome gift."
+            align="center"
+            className="[&_p]:text-primary-foreground/80 [&_h2]:text-primary-foreground"
+          />
+        </Reveal>
         {state.success ? (
           <p className="mx-auto mt-8 max-w-xl rounded-md bg-primary-foreground/10 px-4 py-3 text-sm">
             You&apos;re on the list — thank you for subscribing.

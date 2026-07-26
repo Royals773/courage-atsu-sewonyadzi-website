@@ -30,13 +30,15 @@ export function ImagePlaceholder({
       role="img"
       aria-label={label}
       className={cn(
-        "flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-muted/60 p-6 text-center",
+        "relative flex flex-col items-center justify-center gap-2.5 overflow-hidden rounded-xl border border-dashed border-border/80 bg-[linear-gradient(135deg,color-mix(in_oklch,var(--muted),transparent_0%)_0%,color-mix(in_oklch,var(--secondary),transparent_20%)_100%)] p-6 text-center",
         aspectClasses[aspect],
         className
       )}
     >
-      <ImageIcon className="size-6 text-muted-foreground/70" aria-hidden="true" />
-      <span className="text-xs text-muted-foreground/80">{label}</span>
+      <div className="flex size-11 items-center justify-center rounded-full bg-background/70 shadow-sm ring-1 ring-foreground/10">
+        <ImageIcon className="size-5 text-muted-foreground/70" aria-hidden="true" />
+      </div>
+      <span className="max-w-[85%] text-xs leading-snug text-muted-foreground/80">{label}</span>
     </div>
   );
 }

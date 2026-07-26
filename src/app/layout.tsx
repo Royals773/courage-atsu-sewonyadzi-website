@@ -102,6 +102,7 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
     >
       <body className="flex min-h-full flex-col">
         <script

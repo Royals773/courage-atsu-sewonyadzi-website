@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/content/site-config";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/shared/reveal";
 
 function formatEventDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -42,23 +43,27 @@ export async function UpcomingEvents() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(eventsJsonLd) }}
         />
-        <SectionHeading eyebrow="Calendar" title="Upcoming events" align="center" />
+        <Reveal>
+          <SectionHeading eyebrow="Calendar" title="Upcoming events" align="center" />
+        </Reveal>
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
-            <Card key={event.id}>
-              <CardContent className="flex items-start gap-3">
-                <CalendarDays className="mt-0.5 size-5 shrink-0 text-gold" aria-hidden="true" />
-                <div>
-                  <p className="font-medium">{formatEventDate(event.eventDate)}</p>
-                  {event.topicTitle ? (
-                    <p className="mt-1 text-sm text-foreground/90">{event.topicTitle}</p>
-                  ) : null}
-                  {event.venue ? (
-                    <p className="mt-1 text-sm text-muted-foreground">{event.venue}</p>
-                  ) : null}
-                </div>
-              </CardContent>
-            </Card>
+          {events.map((event, i) => (
+            <Reveal key={event.id} delay={i * 80}>
+              <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <CardContent className="flex items-start gap-3">
+                  <CalendarDays className="mt-0.5 size-5 shrink-0 text-gold" aria-hidden="true" />
+                  <div>
+                    <p className="font-medium">{formatEventDate(event.eventDate)}</p>
+                    {event.topicTitle ? (
+                      <p className="mt-1 text-sm text-foreground/90">{event.topicTitle}</p>
+                    ) : null}
+                    {event.venue ? (
+                      <p className="mt-1 text-sm text-muted-foreground">{event.venue}</p>
+                    ) : null}
+                  </div>
+                </CardContent>
+              </Card>
+            </Reveal>
           ))}
         </div>
         <div className="mt-10 text-center">

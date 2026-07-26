@@ -142,8 +142,8 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Selected achievements" title="Selected achievements" align="center" />
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {about.achievements.map((achievement) => (
-              <Card key={achievement}>
+            {about.achievements.map((achievement, i) => (
+              <Card key={i} className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <CardContent>
                   <p className="text-sm text-foreground/90">{achievement}</p>
                 </CardContent>

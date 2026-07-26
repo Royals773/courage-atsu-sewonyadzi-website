@@ -1,4 +1,5 @@
 import { getSettingGroup } from "@/lib/settings/queries";
+import { Reveal } from "@/components/shared/reveal";
 
 export async function SpeakerStats() {
   const credibility = await getSettingGroup("credibility");
@@ -11,16 +12,16 @@ export async function SpeakerStats() {
   ];
 
   return (
-    <section className="border-b border-border bg-secondary/30 py-14">
+    <section className="border-b border-border bg-secondary/30 py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <Reveal className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="font-heading text-3xl font-semibold text-gold sm:text-4xl">{stat.value}</p>
               <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{stat.label}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

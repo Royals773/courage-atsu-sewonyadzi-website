@@ -39,13 +39,14 @@ export function BookCard({ book }: { book: Book }) {
   }
 
   return (
-    <Card className="h-full">
-      <Link href={`/books/${book.slug}`} className="block px-4 pt-4">
+    <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <Link href={`/books/${book.slug}`} className="group block px-4 pt-4">
         <CmsImage
           src={book.coverImageUrl}
           alt={book.coverImageLabel}
           aspect="portrait"
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          className="[&>img]:transition-transform [&>img]:duration-500 group-hover:[&>img]:scale-105"
         />
       </Link>
       <CardContent className="flex flex-1 flex-col gap-2">

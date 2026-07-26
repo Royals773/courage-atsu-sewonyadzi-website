@@ -23,10 +23,10 @@ export function MobileNav({ isSignedIn, displayName }: { isSignedIn: boolean; di
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
-          <Button variant="ghost" size="icon" aria-label="Open menu" />
+          <Button variant="ghost" size="icon-lg" aria-label="Open menu" />
         }
       >
-        <Menu aria-hidden="true" />
+        <Menu className="size-5" aria-hidden="true" />
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-xs">
         <SheetHeader>
