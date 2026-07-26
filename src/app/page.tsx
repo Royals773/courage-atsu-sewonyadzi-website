@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/hero";
+import { FeaturedIn } from "@/components/home/featured-in";
 import { CredibilitySection } from "@/components/home/credibility-section";
 import { FeaturedBooks } from "@/components/home/featured-books";
 import { SpeakingSection } from "@/components/home/speaking-section";
@@ -9,6 +10,7 @@ import { AboutPreview } from "@/components/home/about-preview";
 import { LeadershipPhilosophy } from "@/components/home/leadership-philosophy";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { LatestInsights } from "@/components/home/latest-insights";
+import { LatestVideos } from "@/components/home/latest-videos";
 import { NewsletterSection } from "@/components/home/newsletter-section";
 import { FutureCoursesSection } from "@/components/home/future-courses-section";
 import { FinalCta } from "@/components/home/final-cta";
@@ -17,6 +19,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <FeaturedIn />
       <CredibilitySection />
       <FeaturedBooks />
       <SpeakingSection />
@@ -27,6 +30,7 @@ export default function Home() {
       <LeadershipPhilosophy />
       <TestimonialsSection />
       <LatestInsights />
+      <LatestVideos />
       <NewsletterSection />
       <FutureCoursesSection />
       <FinalCta />

@@ -16,8 +16,8 @@ export const siteConfig = {
   displayName: "Courage Atsu Sewonyadzi",
   initials: "CAS",
   positioningStatement:
-    "Author | Keynote Speaker | Leadership Strategist | Entrepreneur",
-  tagline: "Helping Leaders Build Better Organisations, Stronger Cultures and Lasting Impact.",
+    "Author | International Keynote Speaker | Leadership Strategist | Entrepreneur | Governance & Transformation Advisor",
+  tagline: "Leading Change. Building Excellence. Inspiring People.",
   shortBio:
     "Courage Atsu Sewonyadzi helps leaders across business, public service, education and beyond build organisations people trust, cultures where people thrive, and systems that create lasting impact.",
   longBiography:

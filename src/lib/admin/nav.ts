@@ -19,6 +19,7 @@ export const adminNavItems: AdminNavItem[] = [
   { label: "Speaking Events", href: "/admin/speaking/events", minRole: "administrator" },
   { label: "Press", href: "/admin/press", minRole: "editor" },
   { label: "Video Library", href: "/admin/videos", minRole: "editor" },
+  { label: "Client Logos", href: "/admin/client-logos", minRole: "editor" },
   { label: "Orders", href: "/admin/orders", minRole: "administrator" },
   { label: "Customers", href: "/admin/customers", minRole: "administrator" },
   { label: "Newsletter", href: "/admin/newsletter", minRole: "administrator" },

@@ -1146,6 +1146,30 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["videos"]["Insert"]>;
         Relationships: [];
       };
+      client_logos: {
+        Row: {
+          id: string;
+          name: string;
+          logo_path: string;
+          website_url: string | null;
+          is_published: boolean;
+          position: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          logo_path: string;
+          website_url?: string | null;
+          is_published?: boolean;
+          position?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["client_logos"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {

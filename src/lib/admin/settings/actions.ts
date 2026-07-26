@@ -66,6 +66,7 @@ export async function saveBrandSettingsAction(formData: FormData): Promise<void>
     initials: String(formData.get("initials") ?? ""),
     positioningStatement: String(formData.get("positioningStatement") ?? ""),
     tagline: String(formData.get("tagline") ?? ""),
+    taglineAlternatives: linesOf(formData, "taglineAlternatives"),
     shortBio: String(formData.get("shortBio") ?? ""),
     longBiography: String(formData.get("longBiography") ?? ""),
     mission: String(formData.get("mission") ?? ""),
@@ -75,9 +76,12 @@ export async function saveBrandSettingsAction(formData: FormData): Promise<void>
     emailSenderName: String(formData.get("emailSenderName") ?? ""),
     copyrightName: String(formData.get("copyrightName") ?? ""),
     logoPath: formData.get("logoPath")?.toString() || null,
+    logoLightPath: formData.get("logoLightPath")?.toString() || null,
+    logoDarkPath: formData.get("logoDarkPath")?.toString() || null,
     monogramPath: formData.get("monogramPath")?.toString() || null,
     authorPhotoPath: formData.get("authorPhotoPath")?.toString() || null,
     ogImagePath: formData.get("ogImagePath")?.toString() || null,
+    faviconPath: formData.get("faviconPath")?.toString() || null,
     primaryColor: parseColor(formData, "primaryColor"),
     accentColor: parseColor(formData, "accentColor"),
     secondaryColor: parseColor(formData, "secondaryColor"),
@@ -152,7 +156,16 @@ export async function saveAboutSettingsAction(formData: FormData): Promise<void>
     values: linesOf(formData, "values"),
     timeline,
     achievements: linesOf(formData, "achievements"),
+    awards: linesOf(formData, "awards"),
     mediaBiography: String(formData.get("mediaBiography") ?? ""),
+  });
+}
+
+export async function saveNewsletterSettingsAction(formData: FormData): Promise<void> {
+  await saveSettingGroup("newsletter", {
+    headline: String(formData.get("headline") ?? ""),
+    description: String(formData.get("description") ?? ""),
+    consentText: String(formData.get("consentText") ?? ""),
   });
 }
 
@@ -176,7 +189,14 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
 
 async function uploadBrandImage(
   formData: FormData,
-  field: "logoPath" | "authorPhotoPath" | "monogramPath" | "ogImagePath",
+  field:
+    | "logoPath"
+    | "logoLightPath"
+    | "logoDarkPath"
+    | "authorPhotoPath"
+    | "monogramPath"
+    | "ogImagePath"
+    | "faviconPath",
   prefix: string
 ) {
   const session = await requireAdminAction("administrator");
@@ -211,6 +231,18 @@ async function uploadBrandImage(
 
 export async function uploadLogoAction(formData: FormData): Promise<void> {
   await uploadBrandImage(formData, "logoPath", "logo");
+}
+
+export async function uploadLogoLightAction(formData: FormData): Promise<void> {
+  await uploadBrandImage(formData, "logoLightPath", "logo-light");
+}
+
+export async function uploadLogoDarkAction(formData: FormData): Promise<void> {
+  await uploadBrandImage(formData, "logoDarkPath", "logo-dark");
+}
+
+export async function uploadFaviconAction(formData: FormData): Promise<void> {
+  await uploadBrandImage(formData, "faviconPath", "favicon");
 }
 
 export async function uploadAuthorPhotoAction(formData: FormData): Promise<void> {

@@ -14,10 +14,14 @@ import {
   saveContactSettingsAction,
   saveCredibilitySettingsAction,
   saveHeroSettingsAction,
+  saveNewsletterSettingsAction,
   saveSeoSettingsAction,
   saveSocialSettingsAction,
   uploadAuthorPhotoAction,
+  uploadFaviconAction,
   uploadLogoAction,
+  uploadLogoDarkAction,
+  uploadLogoLightAction,
   uploadMonogramAction,
   uploadOgImageAction,
 } from "@/lib/admin/settings/actions";
@@ -27,7 +31,7 @@ export const metadata: Metadata = { title: "Settings" };
 export default async function AdminSettingsPage() {
   await requireAdmin("administrator");
 
-  const [brand, contact, social, seo, hero, about, credibility] = await Promise.all([
+  const [brand, contact, social, seo, hero, about, credibility, newsletter] = await Promise.all([
     getSettingGroup("brand"),
     getSettingGroup("contact"),
     getSettingGroup("social"),
@@ -35,6 +39,7 @@ export default async function AdminSettingsPage() {
     getSettingGroup("hero"),
     getSettingGroup("about"),
     getSettingGroup("credibility"),
+    getSettingGroup("newsletter"),
   ]);
 
   const timelineText = about.timeline.map((item) => `${item.year} — ${item.label}`).join("\n");
@@ -55,10 +60,31 @@ export default async function AdminSettingsPage() {
         />
 
         <ImageUploadForm
+          title="Logo (light version)"
+          hasImage={Boolean(brand.logoLightPath)}
+          emptyNote="No light-version logo uploaded yet. Prepared for a future dark-background/dark-mode header — replacing it later takes just this upload, no code change."
+          action={uploadLogoLightAction}
+        />
+
+        <ImageUploadForm
+          title="Logo (dark version)"
+          hasImage={Boolean(brand.logoDarkPath)}
+          emptyNote="No dark-version logo uploaded yet. Prepared for a future light-background context — replacing it later takes just this upload, no code change."
+          action={uploadLogoDarkAction}
+        />
+
+        <ImageUploadForm
           title="Monogram"
           hasImage={Boolean(brand.monogramPath)}
           emptyNote="No monogram uploaded — the default mark (public/brand/monogram.svg) is used where space is limited."
           action={uploadMonogramAction}
+        />
+
+        <ImageUploadForm
+          title="Favicon"
+          hasImage={Boolean(brand.faviconPath)}
+          emptyNote="No custom favicon uploaded — the default browser-tab icon (public/brand/favicon.svg) is used. PNG, WebP or SVG recommended."
+          action={uploadFaviconAction}
         />
 
         <ImageUploadForm
@@ -95,6 +121,9 @@ export default async function AdminSettingsPage() {
               <div>
                 <Label htmlFor="tagline">Tagline</Label>
                 <Input id="tagline" name="tagline" defaultValue={brand.tagline} className="mt-1.5" />
+                <p className="mt-1 text-xs text-muted-foreground">
+                  The live tagline shown across the site. Copy one of the alternatives below in to switch it.
+                </p>
               </div>
             </div>
             <div>
@@ -105,6 +134,20 @@ export default async function AdminSettingsPage() {
                 defaultValue={brand.positioningStatement}
                 className="mt-1.5"
               />
+            </div>
+            <div>
+              <Label htmlFor="taglineAlternatives">Alternative taglines (one per line, for reference)</Label>
+              <Textarea
+                id="taglineAlternatives"
+                name="taglineAlternatives"
+                defaultValue={brand.taglineAlternatives.join("\n")}
+                rows={6}
+                className="mt-1.5"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Premium alternatives to choose from. Switching the active tagline never requires a code change —
+                just paste your preferred line into the Tagline field above and save.
+              </p>
             </div>
           </div>
 
@@ -225,9 +268,12 @@ export default async function AdminSettingsPage() {
           </div>
 
           <input type="hidden" name="logoPath" value={brand.logoPath ?? ""} />
+          <input type="hidden" name="logoLightPath" value={brand.logoLightPath ?? ""} />
+          <input type="hidden" name="logoDarkPath" value={brand.logoDarkPath ?? ""} />
           <input type="hidden" name="monogramPath" value={brand.monogramPath ?? ""} />
           <input type="hidden" name="authorPhotoPath" value={brand.authorPhotoPath ?? ""} />
           <input type="hidden" name="ogImagePath" value={brand.ogImagePath ?? ""} />
+          <input type="hidden" name="faviconPath" value={brand.faviconPath ?? ""} />
         </SettingsForm>
 
         <SettingsForm title="Homepage hero" action={saveHeroSettingsAction}>
@@ -382,12 +428,49 @@ export default async function AdminSettingsPage() {
             />
           </div>
           <div>
+            <Label htmlFor="awards">Awards (one per line — leave empty until real, verifiable awards exist)</Label>
+            <Textarea
+              id="awards"
+              name="awards"
+              defaultValue={about.awards.join("\n")}
+              rows={3}
+              className="mt-1.5"
+            />
+          </div>
+          <div>
             <Label htmlFor="mediaBiography">Media biography</Label>
             <Textarea
               id="mediaBiography"
               name="mediaBiography"
               defaultValue={about.mediaBiography}
               rows={3}
+              className="mt-1.5"
+            />
+          </div>
+        </SettingsForm>
+
+        <SettingsForm title="Newsletter" action={saveNewsletterSettingsAction}>
+          <div>
+            <Label htmlFor="newsletterHeadline">Headline</Label>
+            <Input id="newsletterHeadline" name="headline" defaultValue={newsletter.headline} className="mt-1.5" />
+          </div>
+          <div>
+            <Label htmlFor="newsletterDescription">Description</Label>
+            <Textarea
+              id="newsletterDescription"
+              name="description"
+              defaultValue={newsletter.description}
+              rows={2}
+              className="mt-1.5"
+            />
+          </div>
+          <div>
+            <Label htmlFor="newsletterConsentText">Consent checkbox text</Label>
+            <Textarea
+              id="newsletterConsentText"
+              name="consentText"
+              defaultValue={newsletter.consentText}
+              rows={2}
               className="mt-1.5"
             />
           </div>

@@ -153,6 +153,23 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {about.awards.length > 0 ? (
+        <section className="border-b border-border bg-secondary/30 py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeading eyebrow="Recognition" title="Awards" align="center" />
+            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {about.awards.map((award, i) => (
+                <Card key={i} className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <CardContent>
+                    <p className="text-sm text-foreground/90">{award}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="border-b border-border py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-2xl font-semibold">Media biography</h2>

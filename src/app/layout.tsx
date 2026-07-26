@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { siteConfig } from "@/lib/content/site-config";
 import { getSettingGroup } from "@/lib/settings/queries";
+import { getMediaSignedUrl } from "@/lib/media/signed-url";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,6 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
     getSettingGroup("seo"),
     getSettingGroup("brand"),
   ]);
+  const customFaviconUrl = brand.faviconPath ? await getMediaSignedUrl(brand.faviconPath) : null;
 
   return {
     metadataBase: new URL(siteConfig.siteUrl),
@@ -45,10 +47,12 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: seo.defaultDescription,
     icons: {
-      icon: [
-        { url: siteConfig.assets.favicon, type: "image/svg+xml" },
-        { url: siteConfig.assets.icon, type: "image/svg+xml", sizes: "any" },
-      ],
+      icon: customFaviconUrl
+        ? [{ url: customFaviconUrl }]
+        : [
+            { url: siteConfig.assets.favicon, type: "image/svg+xml" },
+            { url: siteConfig.assets.icon, type: "image/svg+xml", sizes: "any" },
+          ],
       apple: siteConfig.assets.appleTouchIcon,
     },
     openGraph: {

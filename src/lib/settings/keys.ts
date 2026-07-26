@@ -23,6 +23,11 @@ export interface BrandSettings {
   initials: string;
   positioningStatement: string;
   tagline: string;
+  /**
+   * Alternative premium taglines an admin can copy into the `tagline`
+   * field above to switch the live tagline without any code change.
+   */
+  taglineAlternatives: string[];
   shortBio: string;
   longBiography: string;
   mission: string;
@@ -32,9 +37,13 @@ export interface BrandSettings {
   emailSenderName: string;
   copyrightName: string;
   logoPath: string | null;
+  /** Optional variants prepared for future light/dark-aware rendering. */
+  logoLightPath: string | null;
+  logoDarkPath: string | null;
   monogramPath: string | null;
   authorPhotoPath: string | null;
   ogImagePath: string | null;
+  faviconPath: string | null;
   primaryColor: string | null;
   accentColor: string | null;
   secondaryColor: string | null;
@@ -84,7 +93,15 @@ export interface AboutSettings {
   values: string[];
   timeline: { year: string; label: string }[];
   achievements: string[];
+  /** Left empty until real, verifiable awards exist — never fabricated. */
+  awards: string[];
   mediaBiography: string;
+}
+
+export interface NewsletterSettings {
+  headline: string;
+  description: string;
+  consentText: string;
 }
 
 /**
@@ -112,6 +129,18 @@ export const SETTINGS_DEFAULTS = {
     initials: siteConfig.initials,
     positioningStatement: siteConfig.positioningStatement,
     tagline: siteConfig.tagline,
+    taglineAlternatives: [
+      "Leadership That Transforms. Strategy That Endures.",
+      "Building Institutions Worth Trusting.",
+      "Strategy, Governance and the Courage to Lead.",
+      "Where Leadership Meets Lasting Impact.",
+      "Practical Leadership for a Changing World.",
+      "Turning Vision Into Institutions That Last.",
+      "Leadership, Reimagined for Real Organisations.",
+      "Excellence in Leadership. Integrity in Practice.",
+      "Shaping Leaders. Transforming Organisations.",
+      "From Insight to Impact — Leadership That Delivers.",
+    ],
     shortBio: siteConfig.shortBio,
     longBiography: siteConfig.longBiography,
     mission: siteConfig.mission,
@@ -121,9 +150,12 @@ export const SETTINGS_DEFAULTS = {
     emailSenderName: siteConfig.emailSenderName,
     copyrightName: siteConfig.copyrightName,
     logoPath: null,
+    logoLightPath: null,
+    logoDarkPath: null,
     monogramPath: null,
     authorPhotoPath: null,
     ogImagePath: null,
+    faviconPath: null,
     primaryColor: null,
     accentColor: null,
     secondaryColor: null,
@@ -206,9 +238,17 @@ export const SETTINGS_DEFAULTS = {
       "Content pending final approval — replace with a real, verifiable accomplishment.",
       "Content pending final approval — replace with a real, verifiable accomplishment.",
     ],
+    awards: [],
     mediaBiography:
       "[Placeholder short-form biography suitable for event programmes and press use. See the Media page for the full media kit. Content pending final approval.]",
   } satisfies AboutSettings,
+  newsletter: {
+    headline: "Get the free guide: 5 Systems Every Leader Needs",
+    description:
+      "Join the mailing list for occasional insights on leadership, strategy and building organisations that last — plus the free guide as a welcome gift.",
+    consentText:
+      "I agree to receive emails and understand I can unsubscribe at any time.",
+  } satisfies NewsletterSettings,
   credibility: {
     yearsExperience: "[X]+",
     peopleReached: "[X]",
