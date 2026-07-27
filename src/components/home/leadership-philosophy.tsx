@@ -1,6 +1,7 @@
 import { getSettingGroup } from "@/lib/settings/queries";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
+import { Quote } from "@/components/shared/quote";
 
 export async function LeadershipPhilosophy() {
   const [brand, about] = await Promise.all([
@@ -13,9 +14,9 @@ export async function LeadershipPhilosophy() {
       <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading eyebrow="Philosophy" title="Leadership philosophy" align="center" />
-          <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground">
+          <Quote align="center" className="mt-8" attribution={brand.displayName}>
             {brand.mission}
-          </p>
+          </Quote>
         </Reveal>
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {about.values.map((value, i) => (

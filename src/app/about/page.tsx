@@ -6,6 +6,7 @@ import { getAuthorPhotoUrl } from "@/lib/settings/logo";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
 import { CmsImage } from "@/components/shared/cms-image";
+import { ImagePlaceholder } from "@/components/shared/image-placeholder";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -65,6 +66,7 @@ export default async function AboutPage() {
             <p className="mt-4 text-pretty text-foreground/90">{about.professionalJourney}</p>
             <p className="mt-4 text-pretty text-foreground/90">{about.leadershipExperience}</p>
           </div>
+          <ImagePlaceholder label="Leadership workshop photography placeholder" aspect="wide" />
           <div>
             <h2 className="font-heading text-2xl font-semibold">
               Leadership philosophy

@@ -55,7 +55,11 @@ export default async function AdminVideosPage() {
                 <TableCell>
                   <Badge variant="secondary">{video.platform}</Badge>
                 </TableCell>
-                <TableCell>{video.is_published ? "Yes" : "Draft"}</TableCell>
+                <TableCell>
+                  <Badge variant={video.is_published ? "success" : "warning"}>
+                    {video.is_published ? "Published" : "Draft"}
+                  </Badge>
+                </TableCell>
                 <TableCell className="flex justify-end gap-2">
                   {video.platform !== "upload" ? (
                     <VideoDialog video={video} trigger={<Button variant="outline" size="sm">Edit</Button>} />

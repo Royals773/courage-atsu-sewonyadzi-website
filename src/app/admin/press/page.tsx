@@ -52,7 +52,11 @@ export default async function AdminPressPage() {
                 <TableCell>
                   <Badge variant="secondary">{item.type.replace("_", " ")}</Badge>
                 </TableCell>
-                <TableCell>{item.is_published ? "Yes" : "Draft"}</TableCell>
+                <TableCell>
+                  <Badge variant={item.is_published ? "success" : "warning"}>
+                    {item.is_published ? "Published" : "Draft"}
+                  </Badge>
+                </TableCell>
                 <TableCell className="flex justify-end gap-2">
                   <PressItemDialog item={item} trigger={<Button variant="outline" size="sm">Edit</Button>} />
                   <DeletePressItemButton id={item.id} />

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 210" role="img" aria-label="Courage Atsu Sewonyadzi — vertical lockup">
+  <path d="M120 44 V20 H144" fill="none" stroke="#131f35" stroke-width="6" stroke-linecap="square"/>
+  <path d="M180 56 V80 H156" fill="none" stroke="#131f35" stroke-width="6" stroke-linecap="square"/>
+  <line x1="122" y1="78" x2="178" y2="22" stroke="#dbb155" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="178" cy="22" r="5" fill="#dbb155"/>
+  <text x="150" y="130" text-anchor="middle" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="26" font-weight="600" letter-spacing="0.3" fill="#131f35">Courage Atsu Sewonyadzi</text>
+  <line x1="90" y1="148" x2="210" y2="148" stroke="#dbb155" stroke-width="2"/>
+  <text x="150" y="172" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" letter-spacing="2" fill="#6b1d24">AUTHOR &#183; KEYNOTE SPEAKER</text>
+  <text x="150" y="190" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" letter-spacing="2" fill="#6b1d24">LEADERSHIP STRATEGIST &#183; ENTREPRENEUR</text>
+</svg>

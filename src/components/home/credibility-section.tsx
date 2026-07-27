@@ -1,5 +1,6 @@
 import { getSettingGroup } from "@/lib/settings/queries";
 import { Reveal } from "@/components/shared/reveal";
+import { CountUp } from "@/components/shared/count-up";
 
 export async function CredibilitySection() {
   const credibility = await getSettingGroup("credibility");
@@ -19,7 +20,9 @@ export async function CredibilitySection() {
         <Reveal className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="font-heading text-3xl font-semibold text-gold">{stat.value}</p>
+              <p className="font-heading text-3xl font-semibold text-gold">
+                <CountUp value={stat.value} />
+              </p>
               <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{stat.label}</p>
             </div>
           ))}

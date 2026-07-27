@@ -47,8 +47,11 @@ export const siteConfig = {
   assets: {
     logoPrimary: "/brand/logo-primary.svg",
     logoHorizontal: "/brand/logo-horizontal.svg",
+    logoVertical: "/brand/logo-vertical.svg",
     monogram: "/brand/monogram.svg",
     icon: "/brand/icon.svg",
+    iconTransparent: "/brand/icon-transparent.svg",
+    socialProfileIcon: "/brand/social-profile-icon.svg",
     logoWhite: "/brand/logo-white.svg",
     logoBlack: "/brand/logo-black.svg",
     favicon: "/brand/favicon.svg",

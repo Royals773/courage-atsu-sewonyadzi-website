@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 
-import { footerNav } from "@/lib/content/site-config";
+import { footerNav, siteConfig } from "@/lib/content/site-config";
 import { getSettingGroup } from "@/lib/settings/queries";
+import { getMonogramUrl } from "@/lib/settings/logo";
 import { SocialLinks } from "@/components/shared/social-links";
 import { FooterNewsletterForm } from "@/components/layout/footer-newsletter-form";
 
@@ -11,12 +13,14 @@ export async function Footer() {
     getSettingGroup("contact"),
     getSettingGroup("social"),
   ]);
+  const monogramUrl = (brand.monogramPath ? await getMonogramUrl(brand.monogramPath) : null) ?? siteConfig.assets.monogram;
 
   return (
     <footer className="border-t border-border bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr_1fr_1fr_1.4fr]">
           <div>
+            <Image src={monogramUrl} alt="" width={36} height={36} className="mb-3 size-9" aria-hidden="true" />
             <p className="font-heading text-lg font-semibold">{brand.displayName}</p>
             <p className="mt-3 max-w-xs text-sm text-muted-foreground">{brand.shortBio}</p>
             <SocialLinks className="mt-5 flex flex-wrap gap-2" social={social} />

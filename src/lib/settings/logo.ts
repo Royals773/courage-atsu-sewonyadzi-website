@@ -9,3 +9,7 @@ export async function getLogoUrl(logoPath: string): Promise<string | null> {
 export async function getAuthorPhotoUrl(photoPath: string): Promise<string | null> {
   return getMediaSignedUrl(photoPath);
 }
+
+export async function getMonogramUrl(monogramPath: string): Promise<string | null> {
+  return getMediaSignedUrl(monogramPath);
+}

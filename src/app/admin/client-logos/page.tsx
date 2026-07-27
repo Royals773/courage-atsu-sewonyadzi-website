@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/admin/auth";
 import { getAdminClientLogos } from "@/lib/admin/client-logos/queries";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
+import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ClientLogoUploadForm } from "@/components/admin/client-logos/client-logo-upload-form";
 import { ClientLogoDialog } from "@/components/admin/client-logos/client-logo-dialog";
@@ -43,7 +44,11 @@ export default async function AdminClientLogosPage() {
                 <TableCell className="font-medium">{logo.name}</TableCell>
                 <TableCell className="text-muted-foreground">{logo.website_url ?? "—"}</TableCell>
                 <TableCell>{logo.position}</TableCell>
-                <TableCell>{logo.is_published ? "Yes" : "Draft"}</TableCell>
+                <TableCell>
+                  <Badge variant={logo.is_published ? "success" : "warning"}>
+                    {logo.is_published ? "Published" : "Draft"}
+                  </Badge>
+                </TableCell>
                 <TableCell className="flex justify-end gap-2">
                   <ClientLogoDialog logo={logo} trigger={<Button variant="outline" size="sm">Edit</Button>} />
                   <DeleteClientLogoButton id={logo.id} />
