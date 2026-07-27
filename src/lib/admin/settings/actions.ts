@@ -169,6 +169,15 @@ export async function saveNewsletterSettingsAction(formData: FormData): Promise<
   });
 }
 
+export async function saveCtaSettingsAction(formData: FormData): Promise<void> {
+  await saveSettingGroup("cta", {
+    headline: String(formData.get("headline") ?? ""),
+    description: String(formData.get("description") ?? ""),
+    primaryLabel: String(formData.get("primaryLabel") ?? ""),
+    secondaryLabel: String(formData.get("secondaryLabel") ?? ""),
+  });
+}
+
 export async function saveCredibilitySettingsAction(formData: FormData): Promise<void> {
   await saveSettingGroup("credibility", {
     yearsExperience: String(formData.get("yearsExperience") ?? ""),

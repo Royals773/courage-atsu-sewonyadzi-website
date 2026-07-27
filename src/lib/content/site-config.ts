@@ -17,17 +17,18 @@ export const siteConfig = {
   initials: "CAS",
   positioningStatement:
     "Author | International Keynote Speaker | Leadership Strategist | Entrepreneur | Governance & Transformation Advisor",
-  tagline: "Leading Change. Building Excellence. Inspiring People.",
+  tagline: "Leadership that moves nations forward.",
   shortBio:
-    "Courage Atsu Sewonyadzi helps leaders across business, public service, education and beyond build organisations people trust, cultures where people thrive, and systems that create lasting impact.",
+    "Courage Atsu Sewonyadzi is an internationally recognised leadership thinker, keynote speaker, author and entrepreneur. His work spans governance, regulation, organisational culture, strategy, execution and transformation — helping leaders and institutions move from good intentions to lasting results.",
   longBiography:
-    "Courage Atsu Sewonyadzi is an author, keynote speaker, leadership strategist and entrepreneur working across leadership, organisational culture, strategy, governance and entrepreneurship — with recognised expertise in adult social care and a long-standing interest in Africa's economic development.\n\n" +
-    "[Placeholder — a paragraph on professional background and the range of leadership roles and sectors that underpin this work. Content pending final approval.]\n\n" +
-    "[Placeholder — a paragraph on the books, speaking practice and consulting work, including the kinds of organisations and audiences typically served. Content pending final approval.]",
+    "Courage Atsu Sewonyadzi is an internationally recognised leadership thinker, keynote speaker, author and entrepreneur, working at the intersection of governance, regulation, organisational culture, strategy, execution and transformation. His positioning extends across sectors — business, public service, education and beyond — with adult social care standing as one proving ground among several where his leadership thinking has been tested and demonstrated in practice.\n\n" +
+    "His work is built on a single conviction: that most organisations do not fail from a shortage of good ideas, but from the gap between deciding and doing. Across boardrooms, public institutions and growing enterprises, he works with leaders to close that gap — building the governance structures, the culture and the execution discipline that turn strategy into results that last.\n\n" +
+    "[Placeholder — a paragraph on specific career milestones, roles held, and organisations led or advised. Content pending your review and confirmation.]\n\n" +
+    "As an author and keynote speaker, his books and platform talks bring the same practical, execution-first thinking to audiences and readers navigating change of their own — in leadership, in governance, and in building institutions strong enough to outlast the people who founded them.",
   mission:
-    "[Draft — pending your review] To equip leaders with the thinking, systems and practical strategies they need to build organisations that people trust, cultures where people thrive, and institutions that create lasting impact.",
+    "To equip leaders and institutions with the governance, culture and execution capability to turn bold strategy into lasting results — and to prove, in the process, that world-class leadership can be built anywhere, including in the sectors and geographies too often overlooked.",
   vision:
-    "[Draft — pending your review] A future in which leaders across business, public service, education and community life build institutions strong enough to outlast them and trusted enough to be worth the effort — with Africa's own leaders and enterprises recognised among the world's best.",
+    "A future in which institutions — in business, government and public life — are led with enough discipline to execute, enough integrity to be trusted, and enough vision to outlast the leaders who built them; and in which leadership from Africa and its diaspora is recognised among the world's best, not as an exception but as a standard.",
   domain: "courageatsusewonyadzi.com",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   contactEmail: "hello@courageatsusewonyadzi.com",

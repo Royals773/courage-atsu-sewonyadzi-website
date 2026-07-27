@@ -13,6 +13,7 @@ import {
   saveBrandSettingsAction,
   saveContactSettingsAction,
   saveCredibilitySettingsAction,
+  saveCtaSettingsAction,
   saveHeroSettingsAction,
   saveNewsletterSettingsAction,
   saveSeoSettingsAction,
@@ -31,7 +32,7 @@ export const metadata: Metadata = { title: "Settings" };
 export default async function AdminSettingsPage() {
   await requireAdmin("administrator");
 
-  const [brand, contact, social, seo, hero, about, credibility, newsletter] = await Promise.all([
+  const [brand, contact, social, seo, hero, about, credibility, newsletter, cta] = await Promise.all([
     getSettingGroup("brand"),
     getSettingGroup("contact"),
     getSettingGroup("social"),
@@ -40,6 +41,7 @@ export default async function AdminSettingsPage() {
     getSettingGroup("about"),
     getSettingGroup("credibility"),
     getSettingGroup("newsletter"),
+    getSettingGroup("cta"),
   ]);
 
   const timelineText = about.timeline.map((item) => `${item.year} — ${item.label}`).join("\n");
@@ -473,6 +475,38 @@ export default async function AdminSettingsPage() {
               rows={2}
               className="mt-1.5"
             />
+          </div>
+        </SettingsForm>
+
+        <SettingsForm title="Final call-to-action" action={saveCtaSettingsAction}>
+          <div>
+            <Label htmlFor="ctaHeadline">Headline</Label>
+            <Input id="ctaHeadline" name="headline" defaultValue={cta.headline} className="mt-1.5" />
+          </div>
+          <div>
+            <Label htmlFor="ctaDescription">Description</Label>
+            <Textarea
+              id="ctaDescription"
+              name="description"
+              defaultValue={cta.description}
+              rows={2}
+              className="mt-1.5"
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="ctaPrimaryLabel">Primary button label</Label>
+              <Input id="ctaPrimaryLabel" name="primaryLabel" defaultValue={cta.primaryLabel} className="mt-1.5" />
+            </div>
+            <div>
+              <Label htmlFor="ctaSecondaryLabel">Secondary button label</Label>
+              <Input
+                id="ctaSecondaryLabel"
+                name="secondaryLabel"
+                defaultValue={cta.secondaryLabel}
+                className="mt-1.5"
+              />
+            </div>
           </div>
         </SettingsForm>
 

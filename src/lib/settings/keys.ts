@@ -104,6 +104,13 @@ export interface NewsletterSettings {
   consentText: string;
 }
 
+export interface CtaSettings {
+  headline: string;
+  description: string;
+  primaryLabel: string;
+  secondaryLabel: string;
+}
+
 /**
  * Homepage "credibility" stats and the speaking-page stats strip. Values
  * are free text (not numbers) so they can hold "[X]+" style placeholders
@@ -130,6 +137,7 @@ export const SETTINGS_DEFAULTS = {
     positioningStatement: siteConfig.positioningStatement,
     tagline: siteConfig.tagline,
     taglineAlternatives: [
+      "Leading Change. Building Excellence. Inspiring People.",
       "Leadership That Transforms. Strategy That Endures.",
       "Building Institutions Worth Trusting.",
       "Strategy, Governance and the Courage to Lead.",
@@ -178,24 +186,27 @@ export const SETTINGS_DEFAULTS = {
     defaultDescription: siteConfig.tagline,
   } satisfies SeoSettings,
   hero: {
-    headline: "Helping leaders build better organisations, stronger cultures and lasting impact.",
+    headline: "Building the leaders, institutions and ideas that move nations forward.",
     subheading:
-      "An author, keynote speaker and leadership strategist working across business, public service, education and adult social care — helping organisations build stronger leadership, culture and systems.",
+      "An internationally recognised leadership thinker, keynote speaker, author and strategist — working across governance, regulation, organisational culture, strategy and transformation to help institutions execute with clarity and lead with conviction.",
   } satisfies HeroSettings,
   speaking: {
     introduction:
-      "[Placeholder speaker introduction — a short paragraph on speaking style, experience and the kind of events typically served, across leadership, strategy and organisational culture.]",
-    biography: siteConfig.shortBio,
+      "Courage Atsu Sewonyadzi speaks to leaders who are done with inspiration that doesn't survive the drive home. His sessions are built around one idea: that leadership, governance and transformation are practical disciplines, not personality traits — and that any room, given the right framework, can leave with a plan it can start using immediately.",
+    biography:
+      "Courage Atsu Sewonyadzi is an internationally recognised leadership thinker, keynote speaker, author and entrepreneur. He speaks on leadership, governance, organisational culture, strategy, execution and transformation to audiences across business, public service, education and beyond — bringing frameworks tested in real institutions, not slides built for effect.",
     philosophy:
-      "[Placeholder speaking philosophy — practical, frontline-tested ideas delivered so audiences can apply them the next day, not just feel inspired for an afternoon.]",
+      "A talk is only as good as what a leader does with it on Monday morning. Every keynote and workshop is built around practical frameworks — for governance, culture, execution and change — that a room can start applying before the applause has finished, because inspiration that doesn't survive the drive home was never the point.",
     audienceOutcomes: [
       "Leave with a practical framework, not just inspiration",
       "See a clear first step they can take within a week",
-      "Understand how to apply the ideas within their own team or organisation",
+      "Understand how to apply the ideas within their own team, institution or organisation",
+      "Gain a shared language for governance, culture and execution across their leadership team",
     ],
     industries: [
       "Business and entrepreneurship",
-      "Public service and government",
+      "Government and public institutions",
+      "Governance, regulatory and compliance-led organisations",
       "Education",
       "Healthcare and adult social care",
       "Non-profit and community organisations",
@@ -204,28 +215,34 @@ export const SETTINGS_DEFAULTS = {
   } satisfies SpeakingSettings,
   about: {
     heroIntro:
-      "[Placeholder personal background — a few sentences on who you are, where you started, and what led to this work across leadership, business and public service. Content pending final approval.]",
+      "I did not arrive at leadership through theory. I arrived at it through rooms where the stakes were real — where regulatory scrutiny, organisational strain and the expectations of the people we served left no space for ideas that only sounded good. This is the work that shaped how I think about leadership, governance and change: practical first, provable always.",
     professionalJourney:
-      "[Placeholder — outline the professional path from frontline experience through to strategic leadership, consulting, writing and speaking across sectors. Content pending final approval.]",
+      "My path into leadership was not planned as a straight line from certainty to certainty. It was built sector by sector — each one testing a different part of what leadership actually requires: the discipline of governance and regulation, the patience of culture change, the nerve of strategic execution, and the humility to keep learning what leading people, under pressure, really demands.\n\n" +
+      "[Placeholder — outline the specific roles, sectors and turning points in your professional path. Content pending your review and confirmation.]",
     leadershipExperience:
-      "[Placeholder — summarise leadership roles and the kinds of organisations and teams led. Content pending final approval.]",
+      "Across every organisation I have led or advised, the pattern has been the same: the leaders who succeed are not the ones with the most confident plan, but the ones who build the systems, culture and governance to see that plan through when circumstances change. That is the leadership I practise, and the leadership I teach.\n\n" +
+      "[Placeholder — summarise the specific organisations, teams and scale of leadership roles held. Content pending your review and confirmation.]",
     lessonsLearned:
-      "[Placeholder — the practical lessons learned leading real organisations through real pressure, in your own words. Content pending final approval.]",
-    motivationForWriting: "[Placeholder — why these books exist and who they were written for. Content pending final approval.]",
+      "The most expensive lessons in leadership are rarely about strategy. They are about people, timing, and the discipline to keep governance and culture strong when performance is under pressure — because that is exactly when both are tested hardest. Trust, once spent, is the most expensive thing an institution can try to rebuild, and the leaders who protect it deliberately are the ones whose organisations outlast them.",
+    motivationForWriting:
+      "I write because the leaders I meet in boardrooms and public institutions are asking the same questions I once had to answer without a map: how do you govern well under pressure, build a culture that holds, and execute a strategy that survives contact with reality? My books exist to give those leaders the frameworks I had to build the hard way — tested in practice, not just in theory.",
     speakingMission:
-      "[Placeholder — what speaking work is meant to achieve for audiences and organisations. Content pending final approval.]",
+      "When I take a stage, my aim is simple: every audience should leave with something they can use before they've even left the building — not just a feeling, but a framework. Leadership, governance and transformation are not abstract subjects to me; they are working disciplines, and I speak about them the way a practitioner does, not the way a theorist does.",
     expertiseAreas: [
       "Leadership and organisational strategy",
-      "Organisational culture and governance",
+      "Governance, regulation and institutional integrity",
+      "Organisational culture and change management",
+      "Strategic execution and delivery",
+      "Innovation and transformation",
       "Entrepreneurship and business growth",
-      "AI-enabled transformation",
-      "Adult social care and public service",
+      "Adult social care and public service leadership",
       "Community and economic development across Africa",
     ],
     values: [
-      "[Placeholder value — e.g. Integrity in leadership]",
-      "[Placeholder value — e.g. Practical, evidence-based thinking]",
-      "[Placeholder value — e.g. Building across communities and borders]",
+      "Governance and integrity before growth for its own sake",
+      "Execution as the true test of strategy",
+      "Culture as a system to be built, not a slogan to be repeated",
+      "Leadership that transfers — building people and institutions that outlast any one leader",
     ],
     timeline: [
       { year: "[Year]", label: "[Placeholder milestone — e.g. started career in adult social care]" },
@@ -240,7 +257,8 @@ export const SETTINGS_DEFAULTS = {
     ],
     awards: [],
     mediaBiography:
-      "[Placeholder short-form biography suitable for event programmes and press use. See the Media page for the full media kit. Content pending final approval.]",
+      "Courage Atsu Sewonyadzi is an internationally recognised leadership thinker, keynote speaker, author and entrepreneur, working across governance, regulation, organisational culture, strategy and transformation. He speaks and writes on what it takes to lead institutions that execute under pressure and outlast the people who built them.\n\n" +
+      "[Placeholder — add specific credentials, notable engagements or affiliations once confirmed.] For interview requests and full media assets, see the Media page.",
   } satisfies AboutSettings,
   newsletter: {
     headline: "Get the free guide: 5 Systems Every Leader Needs",
@@ -249,6 +267,13 @@ export const SETTINGS_DEFAULTS = {
     consentText:
       "I agree to receive emails and understand I can unsubscribe at any time.",
   } satisfies NewsletterSettings,
+  cta: {
+    headline: "Ready to move your organisation forward?",
+    description:
+      "Whether you're looking for a keynote speaker, a leadership strategist, or your next read on governance and transformation, it starts here.",
+    primaryLabel: "Buy a Book",
+    secondaryLabel: "Book a Speaking Engagement",
+  } satisfies CtaSettings,
   credibility: {
     yearsExperience: "[X]+",
     peopleReached: "[X]",

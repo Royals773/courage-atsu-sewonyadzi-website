@@ -36,7 +36,7 @@ export default async function ContactPage() {
       <PageHeader
         eyebrow="Contact"
         title="Get in touch"
-        description="Typical response time: [Placeholder — e.g. 2-3 business days]."
+        description="For speaking, media or general enquiries — typical response time: [Placeholder — e.g. 2-3 business days]."
       />
 
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -77,8 +77,8 @@ export default async function ContactPage() {
               Send Message
             </Button>
             <p id="contact-form-note" className="text-sm text-muted-foreground">
-              Submission, Supabase storage and email notifications go live in
-              Phase 3.
+              Direct message submission is being finalised. In the meantime,
+              please reach out using the details to the right.
             </p>
           </form>
 
