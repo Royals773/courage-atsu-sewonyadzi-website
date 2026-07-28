@@ -58,5 +58,8 @@ export async function getAdminBookById(id: string) {
     .maybeSingle();
 
   if (error || !data) return null;
-  return data;
+  return {
+    ...data,
+    table_of_contents: (data.table_of_contents ?? []) as { title: string }[],
+  };
 }
