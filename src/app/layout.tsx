@@ -46,6 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${brand.displayName}`,
     },
     description: seo.defaultDescription,
+    alternates: { canonical: siteConfig.siteUrl },
     icons: {
       icon: customFaviconUrl
         ? [{ url: customFaviconUrl }]
