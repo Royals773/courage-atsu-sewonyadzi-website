@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getBookBySlug, getPublishedBooks } from "@/lib/books/queries";
+import { getBookBySlug, getRelatedBooks } from "@/lib/books/queries";
 import { getFaqs } from "@/lib/faqs/queries";
 import { getApprovedTestimonials } from "@/lib/testimonials/queries";
 import { getRelatedArticlesForBook } from "@/lib/blog/queries";
@@ -49,15 +49,15 @@ export default async function BookPage({
   const book = await getBookBySlug(slug);
   if (!book) notFound();
 
-  const [allBooks, faqs, testimonials, brand, relatedArticles, relatedTalks] = await Promise.all([
-    getPublishedBooks(),
-    getFaqs(),
-    getApprovedTestimonials(),
-    getSettingGroup("brand"),
-    getRelatedArticlesForBook(book.categories),
-    getFeaturedSpeakingTopics(),
-  ]);
-  const relatedBooks = allBooks.filter((b) => b.id !== book.id).slice(0, 2);
+  const [relatedBooks, faqs, testimonials, brand, relatedArticles, relatedTalks] =
+    await Promise.all([
+      getRelatedBooks(book.id, 2),
+      getFaqs(),
+      getApprovedTestimonials(),
+      getSettingGroup("brand"),
+      getRelatedArticlesForBook(book.categories),
+      getFeaturedSpeakingTopics(),
+    ]);
   const bookFaqs = faqs.filter((f) =>
     ["book-orders", "delivery", "digital-downloads", "refunds"].includes(
       f.category

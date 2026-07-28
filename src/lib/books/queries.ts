@@ -126,6 +126,38 @@ export async function getPublishedBooks(): Promise<Book[]> {
   }
 }
 
+/**
+ * Fetches a small number of published books other than `excludeId`, for
+ * "related books" rails. Filters at the query level (not by fetching every
+ * published book and slicing in JS) so a page showing 2 related books only
+ * pays the image-signing cost for those 2, not the whole catalogue — that
+ * fan-out (one signed-URL round trip per cover/gallery image, per book)
+ * was large enough to intermittently 503 the book detail page under
+ * concurrent load once combined with the basket-sync request every page
+ * already fires on mount.
+ */
+export async function getRelatedBooks(excludeId: string, limit = 2): Promise<Book[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("books")
+      .select(BOOK_SELECT)
+      .eq("status", "published")
+      .is("deleted_at", null)
+      .neq("id", excludeId)
+      .order("publication_date", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return Promise.all(((data ?? []) as unknown as DbBookRow[]).map(mapBook));
+  } catch (error) {
+    logger.error("getRelatedBooks failed", { error });
+    return [];
+  }
+}
+
 export async function getFeaturedBooks(): Promise<Book[]> {
   if (!isSupabaseConfigured()) return [];
 
