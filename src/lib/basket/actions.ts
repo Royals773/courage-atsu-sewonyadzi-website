@@ -20,29 +20,34 @@ async function getCurrentUserId(): Promise<string | null> {
 export async function findBasketId(): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
 
-  const admin = createAdminClient();
-  const userId = await getCurrentUserId();
+  try {
+    const admin = createAdminClient();
+    const userId = await getCurrentUserId();
 
-  if (userId) {
+    if (userId) {
+      const { data } = await admin
+        .from("baskets")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("status", "active")
+        .maybeSingle();
+      return data?.id ?? null;
+    }
+
+    const token = await getBasketToken();
+    if (!token) return null;
+
     const { data } = await admin
       .from("baskets")
       .select("id")
-      .eq("user_id", userId)
+      .eq("session_token", token)
       .eq("status", "active")
       .maybeSingle();
     return data?.id ?? null;
+  } catch (error) {
+    logger.error("findBasketId failed", { error });
+    return null;
   }
-
-  const token = await getBasketToken();
-  if (!token) return null;
-
-  const { data } = await admin
-    .from("baskets")
-    .select("id")
-    .eq("session_token", token)
-    .eq("status", "active")
-    .maybeSingle();
-  return data?.id ?? null;
 }
 
 /** Finds the caller's active basket, creating one (and a guest cookie, if needed) if missing. */
